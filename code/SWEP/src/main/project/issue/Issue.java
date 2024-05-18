@@ -10,11 +10,10 @@ public class Issue {
     private final ArrayList<IssueComment> commentList = new ArrayList<IssueComment>();
     IssueStatus status;
 
-    public Issue(String title, String description, String reporter, String reportedDate) {
+    public Issue(String title, String description, String reporter) {
         this.title = title;
         this.description = description;
         this.reporter = reporter;
-        this.reportedDate = reportedDate;
     }
 
 
