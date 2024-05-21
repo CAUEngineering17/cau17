@@ -11,6 +11,12 @@ public class Project {
     private String title;
     private String description;
 
+
+    public Project(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public void addIssue(Issue newIssue){
         issueList.add(newIssue);
     }
