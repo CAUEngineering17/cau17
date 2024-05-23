@@ -28,6 +28,10 @@ public class TestIssue {
             System.out.println("Failed to add issue.");
         }
 
+        // 이슈 상태 변경
+        IssueStatus modifiedissuestatus = new IssueStatus("Middle", "Open", new User("dev1", "devPW", 3), false, new User("dev2", "devPW", 4));
+        issueOperations.updateIssueStatus(1, modifiedissuestatus);
+
         List<Issue> i = issueOperations.getAllIssues();
         for (Issue issue1 : i) {
             System.out.println("Title: " + issue.getTitle());

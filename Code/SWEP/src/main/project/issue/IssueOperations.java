@@ -138,6 +138,30 @@ public class IssueOperations {
         return issueList;
     }
 
+    // 이슈 상태 정보 변경
+    public boolean updateIssueStatus(int issueId, IssueStatus newStatus) {
+        String statusQuery = "UPDATE issue_statusdb SET priority = ?, status = ?, assignee = ?, isFixed = ?, fixer = ? WHERE issue_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement statusStmt = conn.prepareStatement(statusQuery)) {
+
+            statusStmt.setString(1, newStatus.getPriority());
+            statusStmt.setString(2, newStatus.getStatus());
+            statusStmt.setString(3, newStatus.getAssignee().getUserID());
+            statusStmt.setBoolean(4, newStatus.isFixed());
+            statusStmt.setString(5, newStatus.getFixer().getUserID());
+            statusStmt.setInt(6, issueId);
+
+            int rowsUpdated = statusStmt.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // 유저 ID로 유저 정보 가져오기
     private User getUserByID(String userId) throws SQLException {
         String query = "SELECT * FROM userdb WHERE userID = ?";
