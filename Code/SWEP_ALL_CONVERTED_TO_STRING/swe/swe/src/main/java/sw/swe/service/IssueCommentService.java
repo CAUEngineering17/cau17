@@ -17,10 +17,10 @@ public class IssueCommentService {
     private IssueCommentRepository commentRepository;
 
     /**
-     * 커멘트 생성
+     * 커멘트를 DB에 저장
      */
     @Transactional
-    public Long createComment(IssueComment comment) {
+    public Long saveComment(IssueComment comment) {
         commentRepository.save(comment);
         return comment.getId();
     }

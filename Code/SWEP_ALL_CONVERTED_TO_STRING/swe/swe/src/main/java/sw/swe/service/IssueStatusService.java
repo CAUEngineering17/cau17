@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sw.swe.domain.Issue;
-import sw.swe.domain.IssueComment;
 import sw.swe.domain.IssueStatus;
 import sw.swe.repository.IssueStatusRepository;
 
@@ -18,10 +17,10 @@ public class IssueStatusService {
     private IssueStatusRepository statusRepository;
 
     /**
-     * 상태 생성
+     * 상태를 DB에 저장
      */
     @Transactional
-    public Long createStatus(IssueStatus status) {
+    public Long saveStatus(IssueStatus status) {
         statusRepository.save(status);
         return status.getId();
     }
@@ -30,7 +29,7 @@ public class IssueStatusService {
      * 상태를 이슈에 연결
      */
     @Transactional
-    public void setProjectForIssue(Long issueStatusId, Issue issue) {
+    public void setIssueForIssueStatus(Long issueStatusId, Issue issue) {
         IssueStatus issueStatus = statusRepository.findOne(issueStatusId);
         if (issueStatus != null) {
             issueStatus.setIssue(issue);

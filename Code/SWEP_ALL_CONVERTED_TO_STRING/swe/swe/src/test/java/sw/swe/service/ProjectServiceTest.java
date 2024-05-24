@@ -5,15 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.annotation.RestController;
 import sw.swe.domain.Project;
-import sw.swe.domain.User;
 import sw.swe.repository.ProjectRepository;
-import sw.swe.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,14 +22,19 @@ public class ProjectServiceTest {
     @Autowired
     ProjectService projectService;
 
+    //@Rollback(false)
     @Test
     public void 프로젝트생성() throws Exception{
-        Project project = new Project();
+        /**Project project = new Project();
         project.setTitle("Channel Orange");
         project.setDescription("1st studio album");
         project.setCurrnetUser("Frank");
+         */
 
-        Long tmpId = projectService.createProject(project);
+        Project project = Project.createProject("Project1", "1st project", "Frank");
+
+
+        Long tmpId = projectService.saveProject(project);
         assertEquals(project, projectRepository.findOne(tmpId));
     }
     @Test

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import sw.swe.domain.User;
 import sw.swe.domain.UserType;
 import sw.swe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -18,10 +17,10 @@ public class UserService {
 
 
     /**
-     * 유저 이름으로 조회
+     * 유저를 DB에 저장(중복 확인)
      */
     @Transactional
-    public Long join(User user) {
+    public Long saveUser(User user) {
         validateDuplicateUser(user); // 중복 회원 검증
         userRepository.save(user);
         return user.getId();

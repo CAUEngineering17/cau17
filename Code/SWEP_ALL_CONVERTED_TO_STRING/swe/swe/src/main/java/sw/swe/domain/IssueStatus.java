@@ -3,6 +3,7 @@ package sw.swe.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import sw.swe.service.IssueStatusService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +24,15 @@ public class IssueStatus {
     private String assignee;
     private boolean isFixed;
     private String fixer;
+
+    public static IssueStatus createIssueStatus(Issue issue, String priority, String status, String assignee, boolean isFixed, String fixer){
+        IssueStatus issueStatus = new IssueStatus();
+        issueStatus.setPriority(priority);
+        issueStatus.setStatus(status);
+        issueStatus.setAssignee(assignee);
+        issueStatus.setFixer(fixer);
+        issueStatus.setFixed(isFixed);
+
+        return issueStatus;
+    }
 }

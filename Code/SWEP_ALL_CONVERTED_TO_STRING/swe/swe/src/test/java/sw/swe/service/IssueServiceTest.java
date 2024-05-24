@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.annotation.RestController;
 import sw.swe.domain.*;
 import sw.swe.repository.IssueRepository;
 import sw.swe.repository.ProjectRepository;
-import sw.swe.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -43,7 +40,9 @@ public class IssueServiceTest {
         issue.setReporter("Frank");
         issue.setReportedDate(String.valueOf(LocalDateTime.now()));
 
-        Long tmpId = issueService.createIssue(issue);
+
+
+        Long tmpId = issueService.saveIssue(issue);
         assertEquals(issue, issueRepository.findOne(tmpId));
     }
 
@@ -55,7 +54,7 @@ public class IssueServiceTest {
         issuecomment.setCommenter("Frank");
         issuecomment.setCommentedDate("2024-05-05");
 
-        Long tmpId = issueCommentService.createComment(issuecomment);
+        Long tmpId = issueCommentService.saveComment(issuecomment);
 
         Issue issue = issueRepository.findOne(1L);
 

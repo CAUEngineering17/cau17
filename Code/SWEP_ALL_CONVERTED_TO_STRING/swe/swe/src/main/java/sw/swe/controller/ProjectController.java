@@ -16,7 +16,7 @@ public class ProjectController {
 
     @PostMapping("/create")
     public Long createProject(@RequestBody Project project) {
-        return projectService.createProject(project);
+        return projectService.saveProject(project);
     }
 
     @GetMapping

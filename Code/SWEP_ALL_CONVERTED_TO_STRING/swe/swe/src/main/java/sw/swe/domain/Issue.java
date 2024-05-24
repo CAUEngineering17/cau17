@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Entity
@@ -29,6 +30,21 @@ public class Issue {
 
     @OneToOne(mappedBy = "issue", fetch = FetchType.LAZY)
     private IssueStatus status;
+
+    public static Issue createIssue(Project project, String title, String description, String reporter, IssueStatus issueStatus, IssueComment... issueComments){
+        Issue issue = new Issue();
+        issue.setProject(project);
+        issue.setIssueStatus(issueStatus);
+        for (IssueComment issueComment : issueComments) {
+            issue.addIssueComment(issueComment);
+        }
+        issue.setTitle(title);
+        issue.setDescription(description);
+        issue.setReporter(reporter);
+        issue.setReportedDate(String.valueOf(LocalDateTime.now()));
+
+        return issue;
+    }
 
     public void setProject(Project project){
         this.project = project;

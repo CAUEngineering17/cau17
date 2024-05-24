@@ -5,18 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.annotation.RestController;
 import sw.swe.domain.IssueStatus;
-import sw.swe.domain.Project;
-import sw.swe.domain.User;
 import sw.swe.repository.IssueStatusRepository;
-import sw.swe.repository.ProjectRepository;
-import sw.swe.repository.UserRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +29,7 @@ public class IssueStatusServiceTest {
         issueStatus.setStatus("New");
         issueStatus.setAssignee("Frank");
 
-        Long tmpId = issueStatusService.createStatus(issueStatus);
+        Long tmpId = issueStatusService.saveStatus(issueStatus);
         assertEquals(issueStatus, issueStatusService.findOne(tmpId));
     }
 }

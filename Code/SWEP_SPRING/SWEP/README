@@ -1,6 +1,0 @@
-SwepApplication을 실행하면 localhost:8080 서버가 열립니다.
-
-postman에 localhost:8080/swe 를 입력하시고 서버 연결해보시먼 됩니다
-
-Error: Unexpected server response: 200 가 뜨면 성공입니다.
-해당 오류는 서버 연동은 성공했는데 값을 받는 과정에서 생기는 오류라네요

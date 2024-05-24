@@ -17,10 +17,10 @@ public class IssueService {
     private IssueRepository issueRepository;
 
     /**
-     * 이슈 생성
+     * 이슈를 DB에 저장
      */
     @Transactional
-    public Long createIssue(Issue issue) {
+    public Long saveIssue(Issue issue) {
         issueRepository.save(issue);
         return issue.getId();
     }

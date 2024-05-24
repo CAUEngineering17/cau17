@@ -3,6 +3,7 @@ package sw.swe.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import sw.swe.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,4 +20,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
+
+    public static User createUser(String userName, String userPW, UserType userType){
+        User user = new User();
+        user.setUserName(userName);
+        user.setUserPW(userPW);
+        user.setUserType(userType);
+
+        return user;
+    }
 }

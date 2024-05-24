@@ -16,10 +16,10 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     /**
-     * 프로젝트 생성
+     * 프로젝트를 DB에 저장
      */
     @Transactional
-    public Long createProject(Project project) {
+    public Long saveProject(Project project) {
         projectRepository.save(project);
         return project.getId();
     }

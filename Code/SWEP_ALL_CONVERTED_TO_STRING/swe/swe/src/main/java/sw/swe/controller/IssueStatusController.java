@@ -16,7 +16,7 @@ public class IssueStatusController {
 
     @PostMapping("/create")
     public Long createStatus(@RequestBody IssueStatus status) {
-        return statusService.createStatus(status);
+        return statusService.saveStatus(status);
     }
 
     @GetMapping("/{id}")

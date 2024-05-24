@@ -16,7 +16,7 @@ public class IssueController {
 
     @PostMapping("/create")
     public Long createIssue(@RequestBody Issue issue) {
-        return issueService.createIssue(issue);
+        return issueService.saveIssue(issue);
     }
 
     @GetMapping

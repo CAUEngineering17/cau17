@@ -16,7 +16,7 @@ public class IssueCommentController {
 
     @PostMapping("/create")
     public Long createComment(@RequestBody IssueComment comment) {
-        return commentService.createComment(comment);
+        return commentService.saveComment(comment);
     }
 
     @GetMapping("/{id}")
