@@ -45,6 +45,12 @@ public class IssueRepository {
                 .getResultList();
     }
 
+    public List<Issue> findByID(String title) {
+        return em.createQuery("select i from Issue i where i.title = :title", Issue.class)
+                .setParameter("title", title)
+                .getResultList();
+    }
+
     public void delete(Issue issue) {
         em.remove(issue);
     }

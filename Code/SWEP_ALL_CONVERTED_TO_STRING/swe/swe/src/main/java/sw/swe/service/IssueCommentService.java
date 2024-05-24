@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sw.swe.domain.Issue;
 import sw.swe.domain.IssueComment;
-import sw.swe.domain.Project;
 import sw.swe.repository.IssueCommentRepository;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class IssueCommentService {
      * 커멘트를 이슈에 연결
      */
     @Transactional
-    public void setProjectForIssue(Long issueCommentId, Issue issue) {
+    public void setIssueForComment(Long issueCommentId, Issue issue) {
         IssueComment issueComment = commentRepository.findOne(issueCommentId);
         if (issueComment != null) {
             issueComment.setIssue(issue);

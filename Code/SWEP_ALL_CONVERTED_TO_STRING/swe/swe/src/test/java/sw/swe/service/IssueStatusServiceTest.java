@@ -29,7 +29,7 @@ public class IssueStatusServiceTest {
     @Autowired
     IssueStatusService issueStatusService;
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     public void 스테이터스생성() throws Exception{
         IssueStatus issueStatus = new IssueStatus();

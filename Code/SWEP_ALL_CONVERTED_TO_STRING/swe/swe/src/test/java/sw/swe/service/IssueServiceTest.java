@@ -8,10 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RestController;
-import sw.swe.domain.Issue;
-import sw.swe.domain.IssueStatus;
-import sw.swe.domain.Project;
-import sw.swe.domain.User;
+import sw.swe.domain.*;
 import sw.swe.repository.IssueRepository;
 import sw.swe.repository.ProjectRepository;
 import sw.swe.repository.UserRepository;
@@ -34,6 +31,8 @@ public class IssueServiceTest {
     ProjectRepository projectRepository;
     @Autowired
     ProjectService projectService;
+    @Autowired
+    private IssueCommentService issueCommentService;
 
     @Rollback(false)
     @Test
@@ -46,6 +45,22 @@ public class IssueServiceTest {
 
         Long tmpId = issueService.createIssue(issue);
         assertEquals(issue, issueRepository.findOne(tmpId));
+    }
+
+    @Rollback(false)
+    @Test
+    public void 코멘트추가() throws Exception{
+        IssueComment issuecomment = new IssueComment();
+        issuecomment.setComment("new comment");
+        issuecomment.setCommenter("Frank");
+        issuecomment.setCommentedDate("2024-05-05");
+
+        Long tmpId = issueCommentService.createComment(issuecomment);
+
+        Issue issue = issueRepository.findOne(1L);
+
+        issue.addIssueComment(issuecomment);
+
     }
 
     @Test

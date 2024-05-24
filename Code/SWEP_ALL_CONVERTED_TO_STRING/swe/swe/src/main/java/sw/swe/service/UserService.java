@@ -55,6 +55,15 @@ public class UserService {
     public List<User> findUserByName(String userName) {return userRepository.findByName(userName);}
 
     /**
+     * 유저의 로그인한 id와 pw가 유효한지 확인
+     */
+    public boolean authenticate(String username, String password) {
+        List<User> userlist = userRepository.findByName(username);
+        User user = userlist.get(0);
+        return user != null && user.getUserPW().equals(password);
+    }
+
+    /**
      * 해당 유저가 Admin인지 확인
      */
     public boolean isAdmin(Long userId) {

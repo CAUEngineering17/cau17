@@ -23,6 +23,7 @@ public class UserServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    //@Rollback(false)
     @Test
     public void 회원가입() throws Exception{
         User user = new User();
