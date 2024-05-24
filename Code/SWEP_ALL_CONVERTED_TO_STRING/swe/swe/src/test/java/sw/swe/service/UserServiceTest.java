@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sw.swe.domain.User;
-import sw.swe.domain.UserType;
 import sw.swe.repository.UserRepository;
 
 import static org.junit.Assert.*;
@@ -27,7 +26,7 @@ public class UserServiceTest {
         User user = new User();
         user.setUserName("Frank");
         user.setUserPW("Frank");
-        user.setUserType(UserType.ADMIN);
+        user.setUserType("Admin");
 
         Long tmpId = userService.saveUser(user);
 

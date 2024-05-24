@@ -2,11 +2,11 @@ package sw.swe.service;
 
 import lombok.RequiredArgsConstructor;
 import sw.swe.domain.User;
-import sw.swe.domain.UserType;
 import sw.swe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -66,7 +66,7 @@ public class UserService {
      * 해당 유저가 Admin인지 확인
      */
     public boolean isAdmin(Long userId) {
-        if(userRepository.findOne(userId).getUserType() == UserType.ADMIN){
+        if(Objects.equals(userRepository.findOne(userId).getUserType(), "Admin")){
             return true;
         }
         else

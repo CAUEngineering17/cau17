@@ -17,16 +17,23 @@ public class User {
 
     private String userName;
     private String userPW;
+    private String userType;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    public static User createUser(String userName, String userPW, UserType userType){
+    public static User createUser(String userName, String userPW, String userType){
         User user = new User();
         user.setUserName(userName);
         user.setUserPW(userPW);
         user.setUserType(userType);
 
         return user;
+    }
+
+    public void setProject(Project project){
+        this.project = project;
+        project.getUserList().add(this);
     }
 }

@@ -22,16 +22,12 @@ public class IssueComment {
     private String commenter;
     private String commentedDate;
 
-    public void createIssueComment(Issue issue, String comment, String commenter, String commentedDate) {
+    public static IssueComment createIssueComment(Issue issue, String comment, String commenter, String commentedDate) {
         IssueComment issueComment = new IssueComment();
         issueComment.setComment(comment);
         issueComment.setCommenter(commenter);
         issueComment.setCommentedDate(commentedDate);
 
-        IssueCommentService issueCommentService = new IssueCommentService();
-
-        Long tmpId = issueCommentService.saveComment(issueComment);
-
-        issue.addIssueComment(issueComment);
+        return issueComment;
     }
 }

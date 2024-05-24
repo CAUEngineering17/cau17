@@ -23,6 +23,9 @@ public class Project {
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Issue> issueList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<User> userList = new ArrayList<>();
+
     public void addIssue(Issue issue){
         issueList.add(issue);
         issue.setProject(this);
