@@ -3,9 +3,11 @@ package sw.swe.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sw.swe.domain.Project;
+import sw.swe.domain.User;
 import sw.swe.service.ProjectService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/projects")
@@ -14,9 +16,21 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    /**
+     * 프로젝트 생성
+     * @param createUserRequest
+     * @return
+     */
     @PostMapping("/create")
-    public Long createProject(@RequestBody Project project) {
-        return projectService.saveProject(project);
+    public boolean createUser(@RequestBody Map<String, String> createUserRequest) {
+        String title = createUserRequest.get("title");
+        String description = createUserRequest.get("description");
+
+        Project project = Project.createProject(title, description, null);
+
+        Long tmpId = projectService.saveProject(project);
+
+        return true;
     }
 
     @GetMapping
@@ -29,8 +43,21 @@ public class ProjectController {
         return projectService.findOne(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
-        projectService.deleteProject(id);
+    /**
+     * 프로젝트 삭제 기능
+     * @param deleteProjectRequest
+     */
+    @DeleteMapping("/delete")
+    public boolean deleteProject(@RequestBody Map<String, String> deleteProjectRequest) {
+        Long project_id = Long.parseLong(deleteProjectRequest.get("project_id"));
+
+        if(projectService.findOne(project_id) != null){
+            projectService.deleteProject(project_id);
+
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

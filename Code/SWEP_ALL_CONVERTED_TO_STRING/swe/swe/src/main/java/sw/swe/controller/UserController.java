@@ -20,16 +20,16 @@ public class UserController {
 
     /**
      * 계정 생성
-     * @param createuserRequest
+     * @param createUserRequest
      * @return
      */
     @PostMapping("/create")
-    public boolean createUser(@RequestBody Map<String, String> createuserRequest) {
-        String username = createuserRequest.get("id");
-        String password = createuserRequest.get("password");
-        String confirmPassword = createuserRequest.get("confirmPassword");
-        String userType = createuserRequest.get("role");
-        String projectName = createuserRequest.get("project");
+    public boolean createUser(@RequestBody Map<String, String> createUserRequest) {
+        String username = createUserRequest.get("id");
+        String password = createUserRequest.get("password");
+        String confirmPassword = createUserRequest.get("confirmPassword");
+        String userType = createUserRequest.get("role");
+        String projectName = createUserRequest.get("project");
 
         User user = User.createUser(username, password, userType);
 
@@ -54,10 +54,33 @@ public class UserController {
         return userService.findOne(id);
     }
 
+    /*
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+    */
+
+    /**
+     * 유저 삭제 기능
+     * @param deleteUserRequest
+     */
+    @DeleteMapping("/delete")
+    public boolean deleteUser(@RequestBody Map<String, String> deleteUserRequest) {
+        String username = deleteUserRequest.get("id");
+
+        if(userService.findUserByName(username).isEmpty()){
+            return false;
+        }
+        else{
+            User user = userService.findUserByName(username).get(0);
+
+            userService.deleteUser(user.getId());
+
+            return true;
+        }
+    }
+
 
     //@CrossOrigin // 크롬과 같은 브라우져에서 보안 때문에 요청을 막는걸 허용해주는 어노테이션인 것 같습니다.
 
@@ -71,7 +94,13 @@ public class UserController {
         String userName = loginRequest.get("id");
         String userPW = loginRequest.get("password");
 
-        return userService.authenticate(userName, userPW);
+        if(userService.authenticate(userName, userPW)) {
+            projectService.updateCurrentUser(userName);
+
+            return true;
+        }
+        else
+            return false;
     }
 
     /**

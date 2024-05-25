@@ -57,4 +57,10 @@ public class ProjectService {
             throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
         }
     }
+
+    @Transactional
+    public void updateCurrentUser(String username){
+        projectRepository.updateCurrentUser(username);
+    }
+
 }

@@ -53,6 +53,11 @@ public class IssueService {
     }
 
     /**
+     * 유저 이름에 대한 이슈 조회
+     */
+    //public List<Issue> findByUsername(String username) {}
+
+    /**
      * 특정 프로젝트의 모든 이슈 조회
      */
     public List<Issue> findIssuesByProjectId(Long projectId) {
