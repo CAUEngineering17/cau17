@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d5a5ff35-e007-4f0e-a818-11832114354a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/swe/swe/build/build.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/classes/java/test/sw/swe/service/ProjectServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/classes/java/test/sw/swe/service/ProjectServiceTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/reports/tests/test/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/reports/tests/test/packages/sw.swe.service.html" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/reports/tests/test/packages/sw.swe.service.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/output.bin" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/output.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/output.bin.idx" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/output.bin.idx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/test-results/test/binary/results.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/swe/swe/src/main/java/sw/swe/SweApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/swe/swe/src/main/java/sw/swe/SweApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Design/SSD/SSD.vpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../Design/SSD/SSD.vpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Req/UseCase/ITSusecase.vpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Req/UseCase/README" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/swe/swe/src/main/java/sw/swe/SweApplication.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2gwbXaEn7Ruj6IOrlBoNVpngirW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle./Users/mendel/Desktop/sogong/Code/SWEP_ALL_CONVERTED_TO_STRING/swe/swe/build.gradle.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mendel/Desktop/sogong/Code/SWEP_ALL_CONVERTED_TO_STRING/swe/swe/src/main/java/sw/swe&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/swe/swe/src/main/java/sw/swe" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d5a5ff35-e007-4f0e-a818-11832114354a" name="Changes" comment="" />
+      <created>1716611628025</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716611628025</updated>
+      <workItem from="1716611629046" duration="2584000" />
+      <workItem from="1716614910973" duration="1300000" />
+      <workItem from="1716616223627" duration="100000" />
+      <workItem from="1716616998169" duration="352000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

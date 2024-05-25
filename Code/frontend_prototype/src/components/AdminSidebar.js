@@ -8,7 +8,6 @@ const AdminSidebar = () => {
       <ul>
         <li><Link to="/admin/settings">Settings</Link></li>
         <li><Link to="/admin/users">Users</Link></li>
-        <li><Link to="/admin/authority">Authority</Link></li>
       </ul>
     </nav>
   );

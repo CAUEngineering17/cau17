@@ -1,25 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button, Box, Typography, Grid, Container, Paper, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const AdminProjectSettings = () => {
-  const [projects, setProjects] = useState([
-    { id: 1, title: 'Project 1', description: 'Description for Project 1' },
-    { id: 2, title: 'Project 2', description: 'Description for Project 2' }
-  ]);
+  const [projects, setProjects] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newProject = { id: projects.length + 1, title, description };
-    setProjects([...projects, newProject]);
-    setTitle('');
-    setDescription('');
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/projects');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+    }
   };
 
-  const handleDelete = (id) => {
-    setProjects(projects.filter(project => project.id !== id));
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const newProject = { title, description };
+    try {
+      const response = await fetch('http://localhost:8080/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newProject),
+      });
+      if (response.ok) {
+        fetchProjects(); // Refresh the project list
+        setTitle('');
+        setDescription('');
+      } else {
+        console.error('Failed to create project');
+      }
+    } catch (error) {
+      console.error('Failed to create project:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/projects/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        fetchProjects(); // Refresh the project list
+      } else {
+        console.error('Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+    }
   };
 
   return (
