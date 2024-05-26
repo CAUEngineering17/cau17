@@ -40,8 +40,8 @@ public class ProjectRepository {
         em.remove(project);
     }
 
-    public void updateCurrentUser(String username) {
-        em.createQuery("UPDATE Project p SET p.currnetUser = :username")
+    public void updateCurrentUserName(String username) {
+        em.createQuery("UPDATE Project p SET p.currentUserName = :username")
                 .setParameter("username", username)
                 .executeUpdate();
     }

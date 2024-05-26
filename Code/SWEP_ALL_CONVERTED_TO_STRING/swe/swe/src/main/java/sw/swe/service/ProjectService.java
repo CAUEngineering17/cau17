@@ -59,8 +59,8 @@ public class ProjectService {
     }
 
     @Transactional
-    public void updateCurrentUser(String username){
-        projectRepository.updateCurrentUser(username);
+    public void updateCurrentUserName(String username){
+        projectRepository.updateCurrentUserName(username);
     }
 
 }

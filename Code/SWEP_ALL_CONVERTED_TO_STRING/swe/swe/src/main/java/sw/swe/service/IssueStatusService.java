@@ -71,4 +71,16 @@ public class IssueStatusService {
             throw new IllegalArgumentException("존재하지 않는 상태입니다.");
         }
     }
+
+    public void updateAssignee(String assignee, Long statusId) {
+        statusRepository.updateAssignee(assignee, statusId);
+    }
+
+    public void updateStatus(Long issueId, String status) {
+        statusRepository.updateStatus(issueId, status);
+    }
+
+    public void updateFixed(Long issueId, String username) {
+        statusRepository.updateFixed(issueId, username);
+    }
 }

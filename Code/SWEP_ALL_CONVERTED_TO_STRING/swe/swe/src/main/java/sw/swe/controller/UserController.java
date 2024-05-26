@@ -95,7 +95,7 @@ public class UserController {
         String userPW = loginRequest.get("password");
 
         if(userService.authenticate(userName, userPW)) {
-            projectService.updateCurrentUser(userName);
+            projectService.updateCurrentUserName(userName);
 
             return true;
         }

@@ -7,6 +7,7 @@ import sw.swe.domain.IssueStatus;
 import sw.swe.domain.Project;
 import sw.swe.domain.User;
 import sw.swe.service.IssueService;
+import sw.swe.service.IssueStatusService;
 import sw.swe.service.ProjectService;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class IssueController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private IssueStatusService issueStatusService;
 
     /**
      * 이슈 생성
@@ -42,6 +45,12 @@ public class IssueController {
 
             IssueStatus issueStatus = IssueStatus.createIssueStatus
                     (issue, priority, "new", "PL", false, null);
+
+            issueStatusService.saveStatus(issueStatus);
+
+            issueStatusService.setIssueForIssueStatus(issueStatus.getId(), issue);
+
+            issueService.saveIssue(issue);
 
             return true;
         }

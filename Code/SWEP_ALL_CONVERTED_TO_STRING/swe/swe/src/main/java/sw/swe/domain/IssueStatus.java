@@ -1,6 +1,7 @@
 package sw.swe.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,8 @@ public class IssueStatus {
         issueStatus.setAssignee(assignee);
         issueStatus.setFixer(fixer);
         issueStatus.setFixed(isFixed);
+
+        issueStatus.setIssue(issue);
 
         return issueStatus;
     }
