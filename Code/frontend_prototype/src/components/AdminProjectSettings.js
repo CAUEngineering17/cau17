@@ -25,7 +25,7 @@ const AdminProjectSettings = () => {
     event.preventDefault();
     const newProject = { title, description };
     try {
-      const response = await fetch('http://localhost:8080/projects', {
+      const response = await fetch('http://localhost:8080/projects/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,8 +46,12 @@ const AdminProjectSettings = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/projects/${id}`, {
+      const response = await fetch(`http://localhost:8080/projects/delete`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',  // 본문 타입 JSON으로 설정
+        },
+        body: JSON.stringify({ project_id: id })  // JSON 본문 설정
       });
       if (response.ok) {
         fetchProjects(); // Refresh the project list

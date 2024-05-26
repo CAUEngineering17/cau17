@@ -1,12 +1,20 @@
 // src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState('');
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setIsLoggedIn(true);
+      setUser(storedUser);
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,12 +23,14 @@ const Login = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: username, password }),
+      body: JSON.stringify({ id: username, password: password }),
     });
     const data = await response.json();
-    if (data.success) {
+
+    if (data) {
       setIsLoggedIn(true);
       setUser(username);
+      localStorage.setItem('user', username); // 로그인 정보 저장
     } else {
       console.error('로그인 실패');
     }
@@ -31,6 +41,7 @@ const Login = () => {
     setUser('');
     setUsername('');
     setPassword('');
+    localStorage.removeItem('user'); // 로그아웃 시 로그인 정보 제거
   };
 
   return (

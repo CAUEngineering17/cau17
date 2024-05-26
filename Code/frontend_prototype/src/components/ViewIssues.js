@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from '@mui/material';
 //import './ViewIssues.css';
-import SearchBar from './SearchBar';
 
 const issues = [
   { id: 1, title: '사용자 전체 삭제 기능', reporter: '오재환', reportedDate: '2000.06.26', priority: '중요함', status: '해결안됨', asignee: '박지형' },
@@ -18,9 +17,7 @@ const ViewIssues = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <SearchBar />
-      
+    <TableContainer component={Paper}>      
       {/* Add spacing between SearchBar and Table */}
       <Box sx={{ mt: 2 }}> 
         <Table>

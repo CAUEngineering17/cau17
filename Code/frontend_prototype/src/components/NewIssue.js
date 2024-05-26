@@ -1,18 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, MenuItem, Select, InputLabel, FormControl, Button, Container, Grid, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import RichTextEditor from './RichTextEditor';
-//import './NewIssue.css';
 
 const NewIssue = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [project, setProject] = useState('Sample');
   const [priority, setPriority] = useState('major');
+  const [projectId, setProjectId] = useState('');
+  const [reporter, setReporter] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    const fetchUserAndProject = async () => {
+      const userId = localStorage.getItem('user');
+      if (userId) {
+        setReporter(userId);
+        try {
+          const response = await fetch(`http://localhost:8080/users/${userId}`);
+          const data = await response.json();
+
+          console.log(data);
+          setProjectId(data.project_id);
+        } catch (error) {
+          console.error('Failed to fetch project ID:', error);
+        }
+      }
+    };
+    fetchUserAndProject();
+  }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission
-    console.log({ title, description, priority });
+    const newIssue = {
+      title,
+      description,
+      project_id: projectId,
+      priority,
+      reporter,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/issues/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newIssue),
+      });
+
+      if (response.ok) {
+        navigate('/view-issues');
+      } else {
+        console.error('Failed to create issue');
+      }
+    } catch (error) {
+      console.error('Failed to create issue:', error);
+    }
   };
 
   return (
@@ -37,20 +81,6 @@ const NewIssue = () => {
               <RichTextEditor value={description} onChange={setDescription} sx={{ height: 200 }} />
             </Box>
           </Grid>
-
-          <Grid item xs={12}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>projects</InputLabel>
-              <Select
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-                label="projects"
-              >
-                <MenuItem value="Sample">Sample</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-
 
           <Grid item xs={12}>
             <FormControl fullWidth variant="outlined">
