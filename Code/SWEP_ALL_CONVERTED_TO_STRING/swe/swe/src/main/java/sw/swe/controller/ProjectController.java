@@ -9,6 +9,7 @@ import sw.swe.service.ProjectService;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
