@@ -22,6 +22,10 @@ public class IssueStatusRepository {
         return em.find(IssueStatus.class, id);
     }
 
+    public List<IssueStatus> findByAssignee(String assignee) {
+        return em.createQuery("select s from IssueStatus s where s.assignee = assignee",
+                IssueStatus.class).getResultList(); }
+
     public List<IssueStatus> findAll() {
         return em.createQuery("select s from IssueStatus s", IssueStatus.class)
                 .getResultList();

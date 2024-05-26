@@ -30,7 +30,7 @@ public class IssueController {
      * @return
      */
     @PostMapping("/create")
-    public boolean createUser(@RequestBody Map<String, String> createIssueRequest) {
+    public boolean createIssue(@RequestBody Map<String, String> createIssueRequest) {
         String title = createIssueRequest.get("title");
         String description = createIssueRequest.get("description");
         Long project_id = Long.parseLong(createIssueRequest.get("project_id"));
@@ -48,17 +48,18 @@ public class IssueController {
         }
         else
             return false;
-
-
     }
 
+    /**
+     * 유저의 id가 주어지면 그에 맞는 issueList를 출력
+     * @param issueRequest
+     * @return
+     */
     @GetMapping
     public List<Issue> listIssues(@RequestBody Map<String, String> issueRequest) {
         String username = issueRequest.get("id");
 
-
-
-        return issueService.findAllIssues();
+        return issueService.findByUsername(username);
     }
 
     @GetMapping("/{id}")
@@ -75,5 +76,17 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public void deleteIssue(@PathVariable Long id) {
         issueService.deleteIssue(id);
+    }
+
+    /**
+     * 이슈 상세정보 출력
+     * @param request
+     * @return
+     */
+    @PostMapping("/details")
+    public Issue getIssueDetails(@RequestBody Map<String, String> request) {
+        Long issueId = Long.parseLong(request.get("id"));
+
+        return issueService.findOne(issueId);
     }
 }
