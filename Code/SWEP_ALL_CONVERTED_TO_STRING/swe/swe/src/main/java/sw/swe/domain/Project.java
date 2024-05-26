@@ -1,5 +1,6 @@
 package sw.swe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import sw.swe.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,9 +22,11 @@ public class Project {
     private String currnetUser;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Issue> issueList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<User> userList = new ArrayList<>();
 
     public void addIssue(Issue issue){

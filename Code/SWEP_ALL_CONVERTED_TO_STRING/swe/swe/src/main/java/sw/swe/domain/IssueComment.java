@@ -1,9 +1,12 @@
 package sw.swe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import sw.swe.service.IssueCommentService;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
@@ -16,17 +19,18 @@ public class IssueComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id")
+    @JsonIgnore
     private Issue issue;
 
     private String comment;
     private String commenter;
     private String commentedDate;
 
-    public static IssueComment createIssueComment(Issue issue, String comment, String commenter, String commentedDate) {
+    public static IssueComment createIssueComment(Issue issue, String comment, String commenter) {
         IssueComment issueComment = new IssueComment();
         issueComment.setComment(comment);
         issueComment.setCommenter(commenter);
-        issueComment.setCommentedDate(commentedDate);
+        issueComment.setCommentedDate(String.valueOf(LocalDate.now()));
 
         return issueComment;
     }

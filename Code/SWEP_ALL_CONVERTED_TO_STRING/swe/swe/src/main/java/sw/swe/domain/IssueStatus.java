@@ -1,5 +1,6 @@
 package sw.swe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class IssueStatus {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id")
+    @JsonIgnore
     private Issue issue;
 
     private String priority;

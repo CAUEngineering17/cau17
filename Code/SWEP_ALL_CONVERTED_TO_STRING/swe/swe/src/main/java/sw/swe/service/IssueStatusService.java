@@ -50,9 +50,14 @@ public class IssueStatusService {
     /**
      * 전체 상태 조회
      */
-    public List<IssueStatus> findAllStatuses() {
-        return statusRepository.findAll();
-    }
+    public List<IssueStatus> findAllStatuses() { return statusRepository.findAll(); }
+
+    /**
+     * Assignee 조회
+     * @param assignee
+     * @return
+     */
+    public List<IssueStatus> findByAssignee(String assignee) { return statusRepository.findByAssignee(assignee); }
 
     /**
      * 상태 삭제

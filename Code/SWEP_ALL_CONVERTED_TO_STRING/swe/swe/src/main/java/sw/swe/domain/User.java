@@ -1,5 +1,6 @@
 package sw.swe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @JsonIgnore // Json 출력시에 이 필드는 출력되지 않음
     private Project project;
 
     public static User createUser(String userName, String userPW, String userType){
