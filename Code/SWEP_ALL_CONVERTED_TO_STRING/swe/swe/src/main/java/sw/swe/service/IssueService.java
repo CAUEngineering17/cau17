@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sw.swe.domain.Issue;
+import sw.swe.domain.IssueStatus;
 import sw.swe.domain.Project;
 import sw.swe.repository.IssueRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +17,9 @@ public class IssueService {
 
     @Autowired
     private IssueRepository issueRepository;
+
+    @Autowired
+    private IssueStatusService issueStatusService;
 
     /**
      * 이슈를 DB에 저장
@@ -55,7 +60,15 @@ public class IssueService {
     /**
      * 유저 이름에 대한 이슈 조회
      */
-    //public List<Issue> findByUsername(String username) {}
+    public List<Issue> findByUsername(String username) {
+        List<Issue> issueList = new ArrayList<>();
+
+        for (IssueStatus issueStatus : issueStatusService.findByAssignee(username)) {
+                issueList.add(findOne(issueStatus.getIssue().getId()));
+        }
+
+        return issueList;
+    }
 
     /**
      * 특정 프로젝트의 모든 이슈 조회

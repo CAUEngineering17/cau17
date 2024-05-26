@@ -1,5 +1,7 @@
 package sw.swe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,9 +28,11 @@ public class Issue {
     private String reportedDate;
 
     @OneToMany(mappedBy = "issue")
+    @JsonIgnore
     private List<IssueComment> commentList = new ArrayList<>();
 
     @OneToOne(mappedBy = "issue", fetch = FetchType.LAZY)
+    @JsonUnwrapped  // Json 출력시에 추가로 issuestatus 필드까지 출력
     private IssueStatus status;
 
     public static Issue createIssue(Project project, String title, String description, String reporter){

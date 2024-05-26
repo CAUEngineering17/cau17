@@ -74,6 +74,15 @@ public class UserService {
     }
 
     /**
+     * 해당 유저의 유저타입(role) 반환
+     */
+    public String getUsertype(Long userId) {
+        User user = userRepository.findOne(userId);
+
+        return user.getUserType();
+    }
+
+    /**
      * 유저 삭제
      */
     @Transactional
