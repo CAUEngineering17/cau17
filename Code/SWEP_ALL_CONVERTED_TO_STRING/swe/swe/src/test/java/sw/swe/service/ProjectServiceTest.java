@@ -25,10 +25,11 @@ public class ProjectServiceTest {
     //@Rollback(false)
     @Test
     public void 프로젝트생성() throws Exception{
-        /**Project project = new Project();
+        /*
+        Project project = new Project();
         project.setTitle("Channel Orange");
         project.setDescription("1st studio album");
-        project.setCurrnetUser("Frank");
+        project.setCurrentUserName("Frank");
          */
 
         Project project = Project.createProject("Project1", "1st project", "Frank");
@@ -41,15 +42,16 @@ public class ProjectServiceTest {
     public void 프로젝트전체출력() throws Exception{
         List<Project> projectList = projectService.findAllProjects();
         for (Project project : projectList) {
-            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrnetUser());
+            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrentUserName());
         }
+        projectService.updateCurrentUserName("aaa");
     }
 
     @Test
     public void 프로젝트이름검색출력() throws Exception{
         List<Project> projectList = projectService.findProjectsByTitle("Channel Orange");
         for (Project project : projectList) {
-            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrnetUser());
+            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrentUserName());
         }
     }
 }

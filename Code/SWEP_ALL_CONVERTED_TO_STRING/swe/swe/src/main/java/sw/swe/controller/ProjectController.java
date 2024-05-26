@@ -19,13 +19,13 @@ public class ProjectController {
 
     /**
      * 프로젝트 생성
-     * @param createUserRequest
+     * @param createProjectRequest
      * @return
      */
     @PostMapping("/create")
-    public boolean createUser(@RequestBody Map<String, String> createUserRequest) {
-        String title = createUserRequest.get("title");
-        String description = createUserRequest.get("description");
+    public boolean createUser(@RequestBody Map<String, String> createProjectRequest) {
+        String title = createProjectRequest.get("title");
+        String description = createProjectRequest.get("description");
 
         Project project = Project.createProject(title, description, null);
 

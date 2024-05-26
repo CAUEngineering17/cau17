@@ -3,9 +3,11 @@ package sw.swe.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sw.swe.domain.IssueStatus;
+import sw.swe.repository.IssueStatusRepository;
 import sw.swe.service.IssueStatusService;
+import sw.swe.service.UserService;
 
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -14,6 +16,12 @@ public class IssueStatusController {
 
     @Autowired
     private IssueStatusService statusService;
+    @Autowired
+    private IssueStatusService issueStatusService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private IssueStatusRepository issueStatusRepository;
 
     @PostMapping("/create")
     public Long createStatus(@RequestBody IssueStatus status) {
@@ -33,5 +41,53 @@ public class IssueStatusController {
     @DeleteMapping("/{id}")
     public void deleteStatus(@PathVariable Long id) {
         statusService.deleteStatus(id);
+    }
+
+
+    /**
+     * assignee 할당
+     * @param assigneeRequest
+     * @return
+     */
+    @PostMapping("/assignee")
+    public boolean allocateAssignee (@RequestBody Map<String, String> assigneeRequest){
+        Long issue_id = Long.parseLong(assigneeRequest.get("issue_id"));
+        String assignee = assigneeRequest.get("assignee");
+        String user_id = assigneeRequest.get("user_id");
+
+        if(userService.findUserByName(assignee)!= null){
+            issueStatusService.updateAssignee(assignee, issue_id);
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    /**
+     * status 변경
+     * @param statusRequest
+     * @return
+     */
+    @PostMapping("/update")
+    public boolean changeStatus (@RequestBody Map<String, String> statusRequest){
+        Long issue_id = Long.parseLong(statusRequest.get("issue_id"));
+        String user_id = statusRequest.get("user_id");
+
+        if(userService.findUserByName(user_id).get(0).getUserType().equals("PL")){
+            issueStatusService.updateStatus(issue_id, "assigned");
+            return true;
+        }
+        else if(userService.findUserByName(user_id).get(0).getUserType().equals("dev")){
+            issueStatusService.updateStatus(issue_id, "fixed");
+            issueStatusService.updateFixed(issue_id, user_id);
+            return true;
+        }
+        else if(userService.findUserByName(user_id).get(0).getUserType().equals("tester")){
+            issueStatusService.updateStatus(issue_id, "resolved");
+            return true;
+        }
+        else
+            return false;
     }
 }

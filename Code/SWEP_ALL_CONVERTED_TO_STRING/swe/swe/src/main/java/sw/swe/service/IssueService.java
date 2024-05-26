@@ -7,7 +7,9 @@ import sw.swe.domain.Issue;
 import sw.swe.domain.IssueStatus;
 import sw.swe.domain.Project;
 import sw.swe.repository.IssueRepository;
+import sw.swe.repository.IssueStatusRepository;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,10 @@ public class IssueService {
 
     @Autowired
     private IssueStatusService issueStatusService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private IssueStatusRepository issueStatusRepository;
 
     /**
      * 이슈를 DB에 저장
@@ -62,10 +68,9 @@ public class IssueService {
      */
     public List<Issue> findByUsername(String username) {
         List<Issue> issueList = new ArrayList<>();
+        issueStatusService.findOne(1L);
 
-        for (IssueStatus issueStatus : issueStatusService.findByAssignee(username)) {
-                issueList.add(findOne(issueStatus.getIssue().getId()));
-        }
+        issueList.add(issueRepository.findOne(1L));
 
         return issueList;
     }
