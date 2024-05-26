@@ -13,17 +13,24 @@ const NewIssue = () => {
 
   useEffect(() => {
     const fetchUserAndProject = async () => {
-      const userId = localStorage.getItem('user');
-      if (userId) {
-        setReporter(userId);
+      const username = localStorage.getItem('user');
+      if (username) {
+        setReporter(username);
         try {
-          const response = await fetch(`http://localhost:8080/users/${userId}`);
-          const data = await response.json();
-
-          console.log(data);
-          setProjectId(data.project_id);
+          const usersResponse = await fetch('http://localhost:8080/users');
+          const usersData = await usersResponse.json();
+          const user = usersData.find(user => user.userName === username);
+          if (user) {
+            const userId = user.id;
+            const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
+            const userData = await userResponse.json();
+            //setProjectId(userData.project_id);
+            setProjectId(1);
+          } else {
+            console.error('User not found');
+          }
         } catch (error) {
-          console.error('Failed to fetch project ID:', error);
+          console.error('Failed to fetch user or project ID:', error);
         }
       }
     };

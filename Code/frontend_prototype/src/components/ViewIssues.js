@@ -1,16 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from '@mui/material';
-//import './ViewIssues.css';
-
-const issues = [
-  { id: 1, title: '사용자 전체 삭제 기능', reporter: '오재환', reportedDate: '2000.06.26', priority: '중요함', status: '해결안됨', asignee: '박지형' },
-  // 추가 티켓 데이터
-  // 임시 데이터
-];
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 
 const ViewIssues = () => {
+  const [issues, setIssues] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      const username = localStorage.getItem('user');
+      if (username) {
+        try {
+          const usersResponse = await fetch('http://localhost:8080/users');
+          const usersData = await usersResponse.json();
+          const user = usersData.find(user => user.userName === username);
+          if (user) {
+            const userId = user.id;
+            const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
+            const userData = await userResponse.json();
+
+            console.log(userData)
+
+            const projectId = userData.project_id;
+            const issuesResponse = await fetch(`http://localhost:8080/project/${projectId}/issues`);
+            const issuesData = await issuesResponse.json();
+            setIssues(issuesData);
+          } else {
+            console.error('User not found');
+          }
+        } catch (error) {
+          console.error('Failed to fetch issues:', error);
+        }
+      }
+    };
+
+    fetchIssues();
+  }, []);
 
   const handleRowClick = (id) => {
     navigate(`/view-issues/${id}`);
@@ -18,18 +43,17 @@ const ViewIssues = () => {
 
   return (
     <TableContainer component={Paper}>      
-      {/* Add spacing between SearchBar and Table */}
       <Box sx={{ mt: 2 }}> 
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Issue</TableCell>
-              <TableCell>title</TableCell>
-              <TableCell>reporter</TableCell>
-              <TableCell>reportedDate</TableCell>
-              <TableCell>priority</TableCell>
-              <TableCell>status</TableCell>
-              <TableCell>asignee</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Reporter</TableCell>
+              <TableCell>Reported Date</TableCell>
+              <TableCell>Priority</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Assignee</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -41,7 +65,7 @@ const ViewIssues = () => {
                 <TableCell>{issue.reportedDate}</TableCell>
                 <TableCell>{issue.priority}</TableCell>
                 <TableCell>{issue.status}</TableCell>
-                <TableCell>{issue.asignee}</TableCell>
+                <TableCell>{issue.assignee}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -49,7 +73,6 @@ const ViewIssues = () => {
       </Box>
     </TableContainer>
   );
-
 };
 
 export default ViewIssues;
