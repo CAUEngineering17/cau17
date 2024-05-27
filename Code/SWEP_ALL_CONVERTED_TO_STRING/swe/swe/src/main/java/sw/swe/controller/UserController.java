@@ -54,10 +54,10 @@ public class UserController {
         return userService.findUsers();
     }
 
-//    @GetMapping("/{id}")
-//    public User getUser(@PathVariable Long id) {
-//        return userService.findOne(id);
-//    }
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.findOne(id);
+    }
 
     /*
     @DeleteMapping("/{id}")

@@ -64,7 +64,7 @@ public class IssueController {
      * @param issueRequest
      * @return
      */
-    @GetMapping
+    @PostMapping
     public List<Issue> listIssues(@RequestBody Map<String, String> issueRequest) {
         String username = issueRequest.get("id");
 
@@ -92,7 +92,7 @@ public class IssueController {
      * @param request
      * @return
      */
-    @GetMapping("/details")
+    @PostMapping("/details")
     public Issue getIssueDetails(@RequestBody Map<String, String> request) {
         Long issueId = Long.parseLong(request.get("id"));
 
