@@ -2,7 +2,7 @@ package sw.swe.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sw.swe.domain.User;
+import sw.swe.domain.*;
 import sw.swe.service.ProjectService;
 import sw.swe.service.UserService;
 
@@ -44,15 +44,19 @@ public class UserController {
             return false;
     }
 
+    /**
+     * 유저 리스트
+     * * @return
+     */
     @GetMapping
     public List<User> listUsers() {
         return userService.findUsers();
     }
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.findOne(id);
-    }
+//    @GetMapping("/{id}")
+//    public User getUser(@PathVariable Long id) {
+//        return userService.findOne(id);
+//    }
 
     /*
     @DeleteMapping("/{id}")
@@ -99,6 +103,12 @@ public class UserController {
 
             return true;
         }
+        else if(userName.equals(Admin.id)){
+            if(userPW.equals(Admin.pw))
+                return true;
+            else
+                return false;
+        }
         else
             return false;
     }
@@ -112,6 +122,6 @@ public class UserController {
     public boolean isAdmin(@RequestBody Map<String, String> usernameRequest) {
         String userName = usernameRequest.get("id");
 
-        return userService.isAdmin(userService.findUserByName(userName).get(0).getId());
+        return userName.equals(Admin.id);
     }
 }

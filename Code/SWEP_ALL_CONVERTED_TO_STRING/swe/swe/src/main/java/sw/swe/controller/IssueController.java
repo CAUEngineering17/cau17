@@ -70,28 +70,28 @@ public class IssueController {
         return issueService.findByUsername(username);
     }
 
-    @GetMapping("/{id}")
-    public Issue getIssue(@PathVariable Long id) {
-        return issueService.findOne(id);
-    }
-
-
-    @GetMapping("/project/{projectId}")
-    public List<Issue> getIssuesByProjectId(@PathVariable Long projectId) {
-        return issueService.findIssuesByProjectId(projectId);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteIssue(@PathVariable Long id) {
-        issueService.deleteIssue(id);
-    }
+//    @GetMapping("/{id}")
+//    public Issue getIssue(@PathVariable Long id) {
+//        return issueService.findOne(id);
+//    }
+//
+//
+//    @GetMapping("/project/{projectId}")
+//    public List<Issue> getIssuesByProjectId(@PathVariable Long projectId) {
+//        return issueService.findIssuesByProjectId(projectId);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteIssue(@PathVariable Long id) {
+//        issueService.deleteIssue(id);
+//    }
 
     /**
      * 이슈 상세정보 출력
      * @param request
      * @return
      */
-    @PostMapping("/details")
+    @GetMapping("/details")
     public Issue getIssueDetails(@RequestBody Map<String, String> request) {
         Long issueId = Long.parseLong(request.get("id"));
 

@@ -38,10 +38,10 @@ public class ProjectController {
         return projectService.findAllProjects();
     }
 
-    @GetMapping("/{id}")
-    public Project getProject(@PathVariable Long id) {
-        return projectService.findOne(id);
-    }
+//    @GetMapping("/{id}")
+//    public Project getProject(@PathVariable Long id) {
+//        return projectService.findOne(id);
+//    }
 
     /**
      * 프로젝트 삭제 기능
