@@ -23,25 +23,25 @@ public class IssueStatusController {
     @Autowired
     private IssueStatusRepository issueStatusRepository;
 
-    @PostMapping("/create")
-    public Long createStatus(@RequestBody IssueStatus status) {
-        return statusService.saveStatus(status);
-    }
-
-    @GetMapping("/{id}")
-    public IssueStatus getStatus(@PathVariable Long id) {
-        return statusService.findOne(id);
-    }
+//    @PostMapping("/create")
+//    public Long createStatus(@RequestBody IssueStatus status) {
+//        return statusService.saveStatus(status);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public IssueStatus getStatus(@PathVariable Long id) {
+//        return statusService.findOne(id);
+//    }
 
     @GetMapping
     public List<IssueStatus> listStatuses() {
         return statusService.findAllStatuses();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteStatus(@PathVariable Long id) {
-        statusService.deleteStatus(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteStatus(@PathVariable Long id) {
+//        statusService.deleteStatus(id);
+//    }
 
 
     /**
@@ -57,6 +57,7 @@ public class IssueStatusController {
 
         if(userService.findUserByName(assignee)!= null){
             issueStatusService.updateAssignee(assignee, issue_id);
+            issueStatusService.updateStatus(issue_id, "assigned");
 
             return true;
         }
@@ -75,7 +76,7 @@ public class IssueStatusController {
         String user_id = statusRequest.get("user_id");
 
         if(userService.findUserByName(user_id).get(0).getUserType().equals("PL")){
-            issueStatusService.updateStatus(issue_id, "assigned");
+            issueStatusService.updateStatus(issue_id, "closed");
             return true;
         }
         else if(userService.findUserByName(user_id).get(0).getUserType().equals("dev")){

@@ -65,8 +65,20 @@ public class IssueService {
      */
     public List<Issue> findByUsername(String username) {
         List<Issue> issueList = new ArrayList<>();
-        List<IssueStatus> issueStatuses = issueStatusService.findByAssignee(
-                userService.findUserByName(username).get(0).getUserType());
+        String usertype = userService.findUserByName(username).get(0).getUserType();
+        List<IssueStatus> issueStatuses = new ArrayList<>();
+        if(usertype.equals("dev")) {
+            issueStatuses = issueStatusService.findByAssignee(username);
+        }
+        else if(usertype.equals("tester")) {
+            issueStatuses = issueStatusService.findByStatus("fixed");
+        }
+        else if (usertype.equals("PL")) {
+            issueStatuses = issueStatusService.findByStatus("new");
+            issueStatuses.addAll(issueStatusService.findByStatus("resolved"));
+        }
+        else;
+
 
         if(issueStatuses != null) {
             for (IssueStatus issueStatus : issueStatuses) {

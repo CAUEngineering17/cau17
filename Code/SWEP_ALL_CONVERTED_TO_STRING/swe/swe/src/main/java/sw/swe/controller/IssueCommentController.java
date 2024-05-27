@@ -50,18 +50,18 @@ public class IssueCommentController {
             return false;
     }
 
-    @GetMapping("/{id}")
-    public IssueComment getComment(@PathVariable Long id) {
-        return commentService.findOne(id);
-    }
+//    @GetMapping("/{id}")
+//    public IssueComment getComment(@PathVariable Long id) {
+//        return commentService.findOne(id);
+//    }
 
     @GetMapping
     public List<IssueComment> listComments() {
         return commentService.findAllComments();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteComment(@PathVariable Long id) {
+//        commentService.deleteComment(id);
+//    }
 }

@@ -15,6 +15,7 @@ public class IssueStatus {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "issuestatus_id")
+    @JsonIgnore
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

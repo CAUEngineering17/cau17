@@ -1,7 +1,7 @@
 package sw.swe.service;
 
 import lombok.RequiredArgsConstructor;
-import sw.swe.domain.User;
+import sw.swe.domain.*;
 import sw.swe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ public class UserService {
 
     private void validateDuplicateUser(User user) {
         List<User> findUsers = userRepository.findByName(user.getUserName());
-        if (!findUsers.isEmpty()) {
+        if (!findUsers.isEmpty() || user.getUserName().equals(Admin.id) ) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
@@ -58,8 +58,15 @@ public class UserService {
      */
     public boolean authenticate(String username, String password) {
         List<User> userlist = userRepository.findByName(username);
-        User user = userlist.get(0);
-        return user != null && user.getUserPW().equals(password);
+        if(!userlist.isEmpty()) {
+            User user = userlist.get(0);
+            if(user.getUserPW().equals(password))
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
     /**
