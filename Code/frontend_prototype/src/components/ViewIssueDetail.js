@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Typography, 
@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 
 const ViewIssueDetail = () => {
+  const [defectData, setDefectData] = useState(null);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([
     { id: 1, user: 'User02', text: '이 이슈에 동의합니다. 빠른 해결 부탁드립니다.' }
@@ -18,16 +19,30 @@ const ViewIssueDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const defectData = {
-    title: '사용자 결제 삭제 기능 오류',
-    description: '결제가 오류가 났는데 이런저런 문제까지 겹치고 못해먹겠어요...에러 죽어',
-    reporter: 'User01',
-    reportedDate: '2000.06.26',
-    priority: 'major',
-    status: 'new',
-    Assignee: '박지형',
-    Fixer: '-',
-  };
+  useEffect(() => {
+    const fetchIssueDetails = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/issues/details', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setDefectData(data);
+        } else {
+          console.error('Failed to fetch issue details');
+        }
+      } catch (error) {
+        console.error('Error fetching issue details:', error);
+      }
+    };
+
+    fetchIssueDetails();
+  }, [id]);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -40,6 +55,10 @@ const ViewIssueDetail = () => {
       setComment('');
     }
   };
+
+  if (!defectData) {
+    return <Typography variant="h6" component="h2">Loading...</Typography>;
+  }
 
   return (
     <Paper elevation={3} sx={{ p: 3, maxWidth: 800, margin: '20px auto' }}>
@@ -64,7 +83,7 @@ const ViewIssueDetail = () => {
         </Grid>
         <Grid item xs={6}>
           <Typography variant="body2">
-            <strong>담당자:</strong> {defectData.Assignee}
+            <strong>담당자:</strong> {defectData.assignee}
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -74,7 +93,7 @@ const ViewIssueDetail = () => {
         </Grid>
         <Grid item xs={6}>
           <Typography variant="body2">
-            <strong>해결자:</strong> {defectData.Fixer}
+            <strong>해결자:</strong> {defectData.fixer || '-'}
           </Typography>
         </Grid>
         <Grid item xs={6}>

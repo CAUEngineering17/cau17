@@ -11,23 +11,23 @@ const ViewIssues = () => {
       const username = localStorage.getItem('user');
       if (username) {
         try {
-          const usersResponse = await fetch('http://localhost:8080/users');
-          const usersData = await usersResponse.json();
-          const user = usersData.find(user => user.userName === username);
-          if (user) {
-            const userId = user.id;
-            const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
-            const userData = await userResponse.json();
-            const projectId = userData.project_id;
-            const issuesResponse = await fetch(`http://localhost:8080/project/${projectId}/issues`);
-            const issuesData = await issuesResponse.json();
-            setIssues(issuesData);
-          } else {
+          const response = await fetch('http://localhost:8080/issues', {
+            method: 'POST', // 변경된 메소드
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: username }), // body로 데이터 전송
+          });
+          
+          const data = await response.json(); // 응답을 JSON 형식으로 파싱
+          setIssues(data); // issues 상태 업데이트
+        } 
+        catch (error) {
+            console.error('Failed to fetch issues:', error);
+        } 
+      }
+      else {
             console.error('User not found');
-          }
-        } catch (error) {
-          console.error('Failed to fetch issues:', error);
-        }
       }
     };
 

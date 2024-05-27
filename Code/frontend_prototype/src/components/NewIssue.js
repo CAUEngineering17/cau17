@@ -24,6 +24,7 @@ const NewIssue = () => {
             const userId = user.id;
             const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
             const userData = await userResponse.json();
+
             setProjectId(userData.project_id);
           } else {
             console.error('User not found');
@@ -40,11 +41,11 @@ const NewIssue = () => {
     event.preventDefault();
 
     const newIssue = {
-      title,
-      description,
+      title: title,
+      description: description,
       project_id: projectId,
-      priority,
-      reporter,
+      priority: priority,
+      reporter: reporter,
     };
 
     try {
