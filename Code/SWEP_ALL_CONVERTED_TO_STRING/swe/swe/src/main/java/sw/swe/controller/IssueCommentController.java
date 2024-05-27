@@ -56,8 +56,10 @@ public class IssueCommentController {
 //    }
 
     @GetMapping
-    public List<IssueComment> listComments() {
-        return commentService.findAllComments();
+    public List<IssueComment> listComments(@RequestBody Map<String, String> issueRequest) {
+        Long issue_id = Long.parseLong(issueRequest.get("issue_id"));
+
+        return commentService.findByIssueId(issue_id);
     }
 
 //    @DeleteMapping("/{id}")
