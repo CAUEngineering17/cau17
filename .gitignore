@@ -59,6 +59,10 @@ pom.xml
 
 # Eclipse artifacts, including WTP generated manifests
 bin
+.bin
+.lock
+.probe
+
 .classpath
 .project
 .settings
