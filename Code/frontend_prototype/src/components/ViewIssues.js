@@ -18,9 +18,6 @@ const ViewIssues = () => {
             const userId = user.id;
             const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
             const userData = await userResponse.json();
-
-            console.log(userData)
-
             const projectId = userData.project_id;
             const issuesResponse = await fetch(`http://localhost:8080/project/${projectId}/issues`);
             const issuesData = await issuesResponse.json();

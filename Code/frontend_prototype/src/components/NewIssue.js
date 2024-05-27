@@ -24,8 +24,7 @@ const NewIssue = () => {
             const userId = user.id;
             const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
             const userData = await userResponse.json();
-            //setProjectId(userData.project_id);
-            setProjectId(1);
+            setProjectId(userData.project_id);
           } else {
             console.error('User not found');
           }
@@ -39,6 +38,7 @@ const NewIssue = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const newIssue = {
       title,
       description,
@@ -55,6 +55,9 @@ const NewIssue = () => {
         },
         body: JSON.stringify(newIssue),
       });
+
+      const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
         navigate('/view-issues');
