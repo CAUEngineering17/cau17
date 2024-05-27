@@ -53,6 +53,11 @@ public class IssueCommentService {
     }
 
     /**
+     * 이슈 id로 조회
+     */
+    public List<IssueComment> findByIssueId(Long issue_id) { return commentRepository.findByIssueId(issue_id); }
+
+    /**
      * 특정 이슈에 속한 커멘트 조회
      */
     public List<IssueComment> findAllCommentsByIssue(Long issueId) {
