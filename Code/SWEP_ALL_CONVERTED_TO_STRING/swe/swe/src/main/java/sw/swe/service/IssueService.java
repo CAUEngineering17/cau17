@@ -7,7 +7,6 @@ import sw.swe.domain.Issue;
 import sw.swe.domain.IssueStatus;
 import sw.swe.domain.Project;
 import sw.swe.repository.IssueRepository;
-import sw.swe.repository.IssueStatusRepository;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class IssueService {
     private IssueStatusService issueStatusService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private IssueStatusRepository issueStatusRepository;
 
     /**
      * 이슈를 DB에 저장
@@ -68,9 +65,26 @@ public class IssueService {
      */
     public List<Issue> findByUsername(String username) {
         List<Issue> issueList = new ArrayList<>();
-        issueStatusService.findOne(1L);
+        String usertype = userService.findUserByName(username).get(0).getUserType();
+        List<IssueStatus> issueStatuses = new ArrayList<>();
+        if(usertype.equals("dev")) {
+            issueStatuses = issueStatusService.findByAssignee(username);
+        }
+        else if(usertype.equals("tester")) {
+            issueStatuses = issueStatusService.findByStatus("fixed");
+        }
+        else if (usertype.equals("PL")) {
+            issueStatuses = issueStatusService.findByStatus("new");
+            issueStatuses.addAll(issueStatusService.findByStatus("resolved"));
+        }
+        else;
 
-        issueList.add(issueRepository.findOne(1L));
+
+        if(issueStatuses != null) {
+            for (IssueStatus issueStatus : issueStatuses) {
+                issueList.add(findOne(issueStatus.getIssue().getId()));
+            }
+        }
 
         return issueList;
     }

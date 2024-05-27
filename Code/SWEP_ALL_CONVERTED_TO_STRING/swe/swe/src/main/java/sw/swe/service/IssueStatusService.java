@@ -60,6 +60,13 @@ public class IssueStatusService {
     public List<IssueStatus> findByAssignee(String assignee) { return statusRepository.findByAssignee(assignee); }
 
     /**
+     * Status 조회
+     * @param status
+     * @return
+     */
+    public List<IssueStatus> findByStatus(String status) { return statusRepository.findByStatus(status); }
+
+    /**
      * 상태 삭제
      */
     @Transactional
@@ -72,14 +79,17 @@ public class IssueStatusService {
         }
     }
 
-    public void updateAssignee(String assignee, Long statusId) {
-        statusRepository.updateAssignee(assignee, statusId);
+    @Transactional
+    public void updateAssignee(String assignee, Long issueId) {
+        statusRepository.updateAssignee(assignee, issueId);
     }
 
+    @Transactional
     public void updateStatus(Long issueId, String status) {
         statusRepository.updateStatus(issueId, status);
     }
 
+    @Transactional
     public void updateFixed(Long issueId, String username) {
         statusRepository.updateFixed(issueId, username);
     }
