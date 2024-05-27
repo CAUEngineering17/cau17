@@ -32,7 +32,7 @@ public class Issue {
     @JsonIgnore
     private List<IssueComment> commentList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "issue", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "issue", fetch = FetchType.EAGER)
     @JsonUnwrapped  // Json 출력시에 추가로 issuestatus 필드까지 출력
     private IssueStatus status;
 
