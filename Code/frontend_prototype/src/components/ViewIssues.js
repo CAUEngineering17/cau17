@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import Header from './SearchBar';
 
 const ViewIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -41,16 +42,17 @@ const ViewIssues = () => {
   return (
     <TableContainer component={Paper}>      
       <Box sx={{ mt: 2 }}> 
+        <Header />
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: '#e0e0e0' }}>
             <TableRow>
-              <TableCell>Issue</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Reporter</TableCell>
-              <TableCell>Reported Date</TableCell>
-              <TableCell>Priority</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Assignee</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Issue</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Title</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Reporter</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Reported Date</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Priority</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Status</TableCell>
+              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Assignee</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

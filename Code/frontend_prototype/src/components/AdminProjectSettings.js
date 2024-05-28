@@ -64,7 +64,7 @@ const AdminProjectSettings = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Box sx={{ p: 2 }}>
       <Typography variant="h5" gutterBottom>
         Project Settings
       </Typography>
@@ -125,7 +125,7 @@ const AdminProjectSettings = () => {
           </List>
         </Paper>
       </Box>
-    </Container>
+    </Box>
   );
 };
 

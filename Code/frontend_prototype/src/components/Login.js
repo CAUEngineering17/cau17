@@ -1,20 +1,38 @@
-// src/components/Login.js
-import React, { useState, useEffect } from 'react';
-import './Login.css';
+import React, { useState } from 'react';
+import { TextField, Button, Box } from '@mui/material';
+import { styled } from '@mui/system';
 
-const Login = () => {
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiInputBase-root': {
+    padding: '5px',
+    fontSize: '14px',
+  },
+  '& .MuiInputBase-input': {
+    padding: '5px',
+    color: 'black',  // 입력 텍스트 색상을 검정색으로 설정
+    zIndex: 1,
+  },
+  '& .MuiInputLabel-root': {
+    fontSize: '14px',
+    color: 'black',  // 라벨 텍스트 색상을 검정색으로 설정
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'grey',
+    },
+    '&:hover fieldset': {
+      borderColor: 'black',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'black',
+      backgroundColor: 'white',
+    },
+  },
+}));
+
+const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState('');
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setIsLoggedIn(true);
-      setUser(storedUser);
-    }
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,53 +46,42 @@ const Login = () => {
     const data = await response.json();
 
     if (data) {
-      setIsLoggedIn(true);
-      setUser(username);
-      localStorage.setItem('user', username); // 로그인 정보 저장
+      onLogin(username);
     } else {
       console.error('로그인 실패');
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser('');
-    setUsername('');
-    setPassword('');
-    localStorage.removeItem('user'); // 로그아웃 시 로그인 정보 제거
-  };
-
   return (
-    <div className="login-container">
-      {isLoggedIn ? (
-        <div className="login-info">
-          <p>환영합니다, {user}님!</p>
-          <button onClick={handleLogout}>로그아웃</button>
-        </div>
-      ) : (
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <input
-              type="text"
-              id="username"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-      )}
-    </div>
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+      }}
+      onSubmit={handleSubmit}
+    >
+      <StyledTextField
+        label="Username"
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        size="small"
+        variant="outlined"
+      />
+      <StyledTextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        size="small"
+        variant="outlined"
+      />
+      <Button variant="contained" color="primary" type="submit" size="small">
+        Login
+      </Button>
+    </Box>
   );
 };
 
