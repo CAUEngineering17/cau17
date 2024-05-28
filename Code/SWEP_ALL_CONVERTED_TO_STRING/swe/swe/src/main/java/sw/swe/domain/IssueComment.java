@@ -28,6 +28,8 @@ public class IssueComment {
 
     public static IssueComment createIssueComment(Issue issue, String comment, String commenter) {
         IssueComment issueComment = new IssueComment();
+        issueComment.setIssue(issue);
+
         issueComment.setComment(comment);
         issueComment.setCommenter(commenter);
         issueComment.setCommentedDate(String.valueOf(LocalDate.now()));

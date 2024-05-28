@@ -55,7 +55,7 @@ public class IssueCommentController {
 //        return commentService.findOne(id);
 //    }
 
-    @GetMapping
+    @PostMapping
     public List<IssueComment> listComments(@RequestBody Map<String, String> issueRequest) {
         Long issue_id = Long.parseLong(issueRequest.get("issue_id"));
 
