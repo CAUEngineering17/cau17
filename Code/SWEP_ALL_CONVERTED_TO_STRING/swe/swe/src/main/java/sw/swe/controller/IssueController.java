@@ -49,13 +49,13 @@ public class IssueController {
                     (projectService.findOne(project_id), title, description, reporter);
 
             IssueStatus issueStatus = IssueStatus.createIssueStatus
-                    (issue, priority, "new", "PL", false, null);
+                    (issue, priority, "new", null, false, null);
+
+            issueService.saveIssue(issue);
 
             issueStatusService.saveStatus(issueStatus);
 
             issueStatusService.setIssueForIssueStatus(issueStatus.getId(), issue);
-
-            issueService.saveIssue(issue);
 
             return true;
         }
