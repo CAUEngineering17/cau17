@@ -31,7 +31,7 @@ public class UserRepository {
 
     // User의 userName을 통해 해당하는 User 객체(들)을 반환함.
     public List<User> findByName(String userName) {
-        return em.createQuery("select u from User u where u.userName = :userName", User.class)
+        return em.createQuery("select u from User u join fetch u.project where u.userName = :userName", User.class)
                 .setParameter("userName", userName)
                 .getResultList();
     }

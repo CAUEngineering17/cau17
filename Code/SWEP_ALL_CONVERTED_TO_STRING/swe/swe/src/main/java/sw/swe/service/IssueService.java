@@ -73,8 +73,12 @@ public class IssueService {
         if(username.equals("admin")) {
             usertype = "admin";
         }
-        else
+        else {
+            System.out.println(username);
+            System.out.println(userService.findUserByName(username));
             usertype = userService.findUserByName(username).get(0).getUserType();
+        }
+
         List<IssueStatus> issueStatuses = new ArrayList<>();
         if(usertype.equals("dev")) {
             issueStatuses = issueStatusService.findByAssignee(username);
@@ -86,7 +90,6 @@ public class IssueService {
             issueStatuses = issueStatusService.findByStatus("new");
             issueStatuses.addAll(issueStatusService.findByStatus("resolved"));
         }
-        else;
 
 
         if(issueStatuses != null) {
