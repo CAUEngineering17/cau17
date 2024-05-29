@@ -5,6 +5,7 @@ import Admin from './components/Admin';
 import NewIssue from './components/NewIssue';
 import ViewIssues from './components/ViewIssues';
 import IssueDetail from './components/ViewIssueDetail';
+import Welcome from './components/welcome';
 import './App.css';
 
 const App = () => {
@@ -87,7 +88,7 @@ const App = () => {
               path="/view-issues/:id"
               element={isLoggedIn ? <IssueDetail /> : <Navigate to="/" />}
             />
-            <Route path="/" element={<ViewIssues />} />
+            <Route path="/" element={<Welcome />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         )}

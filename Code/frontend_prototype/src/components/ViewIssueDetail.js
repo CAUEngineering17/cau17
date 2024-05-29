@@ -81,19 +81,26 @@ const ViewIssueDetail = () => {
       }
     };
 
+    fetchIssueDetails();
+    fetchComments();
+    fetchUserRole();
+  }, [id]);
+
+  useEffect(() => {
     const fetchProjectDevelopers = async () => {
       if (defectData) {
         try {
-          const projectId = defectData.projectId;
+          const projectId = defectData.project_id;
     
           const response = await fetch('http://localhost:8080/users');
           const users = await response.json();
    
-          console.log(users);
+          console.log(defectData)
           // 프로젝트 ID가 일치하고 userType이 'dev'인 유저만 필터링
           const developers = users.filter(
             (user) => user.project_id === projectId && user.userType === 'dev'
           );
+          console.log(developers);
           setProjectDevelopers(developers);
         } catch (error) {
           console.error('Error fetching project developers:', error);
@@ -101,12 +108,8 @@ const ViewIssueDetail = () => {
       }
     };
 
-    
-    fetchIssueDetails();
-    fetchComments();
-    fetchUserRole();
-    fetchProjectDevelopers(); // defectData를 가져온 후에 실행
-  }, [id]); // defectData가 변경될 때도 실행
+    fetchProjectDevelopers();
+  }, [defectData]);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -172,9 +175,37 @@ const ViewIssueDetail = () => {
     setSelectedAssignee(event.target.value);
   };
 
-  const handleAssigneeSubmit = async () => {
 
+  const handleAssigneeSubmit = async () => {
+    if (selectedAssignee.trim() !== '') {
+      const assigneeRequest = {
+        issue_id: id,
+        assignee: selectedAssignee,
+        user_id: username,
+      };
+  
+      try {
+        const response = await fetch('http://localhost:8080/issue-statuses/assignee', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(assigneeRequest),
+        });
+  
+        if (response.ok) {
+          console.log('Assignee allocated successfully');
+          await fetchIssueDetails(); // Fetch the updated issue details to refresh the UI
+        } else {
+          console.error('Failed to allocate assignee');
+        }
+      } catch (error) {
+        console.error('Error allocating assignee:', error);
+      }
+    }
   };
+    
+
 
   const renderActionButton = () => {
     if (!role || !defectData) return null;
@@ -202,7 +233,7 @@ const ViewIssueDetail = () => {
     }
     if (role === 'PL' && defectData.status === 'new') {
       return (
-        <Grid container spacing={2} alignItems="center"> 
+        <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
           <Grid item>
             <FormControl fullWidth>
               <InputLabel id="assignee-select-label">담당자 선택</InputLabel>
@@ -214,8 +245,8 @@ const ViewIssueDetail = () => {
                 onChange={handleAssigneeChange}
               >
                 {projectDevelopers.map((developer) => (
-                  <MenuItem key={developer.id} value={developer.id}>
-                    {developer.userName} ({developer.userType}) 
+                  <MenuItem key={developer.id} value={developer.userName}>
+                    {developer.userName} ({developer.userType})
                   </MenuItem>
                 ))}
               </Select>
@@ -227,7 +258,7 @@ const ViewIssueDetail = () => {
             </Button>
           </Grid>
         </Grid>
-      );
+        );
     }
     return null;
   };
