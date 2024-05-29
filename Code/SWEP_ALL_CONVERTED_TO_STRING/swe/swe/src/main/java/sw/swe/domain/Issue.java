@@ -28,11 +28,11 @@ public class Issue {
     private String reporter;
     private String reportedDate;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<IssueComment> commentList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "issue", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "issue", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonUnwrapped  // Json 출력시에 추가로 issuestatus 필드까지 출력
     private IssueStatus status;
 

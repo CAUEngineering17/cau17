@@ -21,11 +21,13 @@ public class Project {
     private String description;
     private String currentUserName;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Issue> issueList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<User> userList = new ArrayList<>();
 

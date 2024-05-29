@@ -8,9 +8,13 @@ import sw.swe.domain.IssueStatus;
 import sw.swe.domain.Project;
 import sw.swe.repository.IssueRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -109,4 +113,26 @@ public class IssueService {
             throw new IllegalArgumentException("존재하지 않는 이슈입니다.");
         }
     }
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    public Map<Integer, Long> getMonthlyIssueCounts(Long project_id) {
+        List<Issue> issues = issueRepository.findByProjectId(project_id);
+        return issues.stream()
+                .collect(Collectors.groupingBy(
+                        issue -> LocalDate.parse(issue.getReportedDate(), formatter).getMonthValue(),
+                        Collectors.counting()
+                ));
+    }
+
+    // Method to get issues count by day
+    public Map<Integer, Long> getDailyIssueCounts(Long project_id) {
+        List<Issue> issues = issueRepository.findByProjectId(project_id);
+        return issues.stream()
+                .collect(Collectors.groupingBy(
+                        issue -> LocalDate.parse(issue.getReportedDate(), formatter).getDayOfMonth(),
+                        Collectors.counting()
+                ));
+    }
+
 }

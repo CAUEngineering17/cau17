@@ -10,8 +10,12 @@ import sw.swe.service.IssueService;
 import sw.swe.service.IssueStatusService;
 import sw.swe.service.ProjectService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -97,5 +101,20 @@ public class IssueController {
         Long issueId = Long.parseLong(request.get("id"));
 
         return issueService.findOne(issueId);
+    }
+
+    @PostMapping("/statistic")
+    public Map<Integer, Long> statisticIssue(@RequestBody Map<String, String> issueRequest) {
+        Long project_id = Long.parseLong(issueRequest.get("project_id"));
+        String property = issueRequest.get("property");
+
+        if(property.equals("daily")){
+            return issueService.getDailyIssueCounts(project_id);
+        }
+        else if(property.equals("month")){
+            return issueService.getMonthlyIssueCounts(project_id);
+        }
+        else
+            return null;
     }
 }
