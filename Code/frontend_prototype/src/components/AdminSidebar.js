@@ -23,6 +23,9 @@ const AdminSidebar = () => {
         <ListItem button component={Link} to="/admin/users">
           <ListItemText primary="Users" />
         </ListItem>
+        <ListItem button component={Link} to="/admin/statistic">
+          <ListItemText primary="statistic" />
+        </ListItem>
       </List>
     </Box>
   );

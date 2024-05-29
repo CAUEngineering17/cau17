@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-function SearchBar() {
+function SearchBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchBy, setSearchBy] = useState('Tickets'); // Default search by option
+  const [searchBy, setSearchBy] = useState('title'); // Default search by option
 
-  const searchOptions = ['title', 'assignee', 'status']; // Available search options
+  const searchOptions = ['title', 'assignee', 'status', 'reporter']; // Available search options
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -15,9 +15,20 @@ function SearchBar() {
     setSearchBy(event.target.value);
   };
 
-  const handleSearchSubmit = () => {
-    // Perform search logic here based on searchTerm and searchBy
-    console.log(`Searching for: "${searchTerm}" in "${searchBy}"`);
+  const handleSearchSubmit = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/issues/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ property: searchBy, searchWord: searchTerm }),
+      });
+      const data = await response.json();
+      onSearch(data);
+    } catch (error) {
+      console.error('Error searching issues:', error);
+    }
   };
 
   return (
