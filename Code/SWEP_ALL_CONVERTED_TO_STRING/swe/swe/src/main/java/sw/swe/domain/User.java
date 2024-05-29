@@ -28,7 +28,7 @@ public class User {
 
     @JsonProperty("project_id")
     public Long getProjectID() {
-        return project.getId();
+        return project != null ? project.getId() : null;
     }
 
     public static User createUser(String userName, String userPW, String userType){

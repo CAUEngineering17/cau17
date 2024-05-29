@@ -103,6 +103,22 @@ public class IssueController {
         return issueService.findOne(issueId);
     }
 
+    @PostMapping("/search")
+    public List<Issue> searchIssue(@RequestBody Map<String, String> request){
+        String property = request.get("property");
+        String searchWord = request.get("searchWord");
+
+        return switch (property) {
+            case "assignee" -> issueService.findIssuesByAssignee(searchWord);
+            case "title" -> issueService.findIssuesByTitle(searchWord);
+            case "status" -> issueService.findIssuesByStatus(searchWord);
+            case "reporter" -> issueService.findIssuesByReporter(searchWord);
+            default -> null;
+        };
+
+    }
+
+
     @PostMapping("/statistic")
     public Map<Integer, Long> statisticIssue(@RequestBody Map<String, String> issueRequest) {
         Long project_id = Long.parseLong(issueRequest.get("project_id"));

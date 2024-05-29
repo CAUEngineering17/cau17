@@ -30,6 +30,7 @@ public class UserService {
 
     private void validateDuplicateUser(User user) {
         List<User> findUsers = userRepository.findByName(user.getUserName());
+        System.out.println(findUsers.isEmpty());
         if (!findUsers.isEmpty() || user.getUserName().equals(Admin.id) ) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }

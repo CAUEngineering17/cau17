@@ -69,7 +69,12 @@ public class IssueService {
      */
     public List<Issue> findByUsername(String username) {
         List<Issue> issueList = new ArrayList<>();
-        String usertype = userService.findUserByName(username).get(0).getUserType();
+        String usertype = null;
+        if(username.equals("admin")) {
+            usertype = "admin";
+        }
+        else
+            usertype = userService.findUserByName(username).get(0).getUserType();
         List<IssueStatus> issueStatuses = new ArrayList<>();
         if(usertype.equals("dev")) {
             issueStatuses = issueStatusService.findByAssignee(username);
@@ -91,6 +96,22 @@ public class IssueService {
         }
 
         return issueList;
+    }
+
+    public List<Issue> findIssuesByAssignee(String assignee) {
+        return issueRepository.findByAssignee(assignee);
+    }
+
+    public List<Issue> findIssuesByStatus(String status) {
+        return issueRepository.findByStatus(status);
+    }
+
+    public List<Issue> findIssuesByReporter(String reporter) {
+        return issueRepository.findByReporter(reporter);
+    }
+
+    public List<Issue> findIssuesByTitle(String title) {
+        return issueRepository.findByTitle(title);
     }
 
     /**
