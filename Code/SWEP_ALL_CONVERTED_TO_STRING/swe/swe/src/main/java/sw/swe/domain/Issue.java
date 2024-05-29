@@ -1,6 +1,7 @@
 package sw.swe.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,9 +20,14 @@ public class Issue {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     @JsonIgnore
+    @JoinColumn(name = "project_id")
     private Project project;
+
+    @JsonProperty("project_id")
+    public Long getProjectId() {
+        return project != null ? project.getId() : null;
+    }
 
     private String title;
     private String description;
