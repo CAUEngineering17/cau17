@@ -18,7 +18,7 @@ public class IssueStatus {
     @JsonIgnore
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id")
     @JsonIgnore
     private Issue issue;

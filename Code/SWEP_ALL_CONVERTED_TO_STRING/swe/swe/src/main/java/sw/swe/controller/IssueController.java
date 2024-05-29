@@ -10,8 +10,12 @@ import sw.swe.service.IssueService;
 import sw.swe.service.IssueStatusService;
 import sw.swe.service.ProjectService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
@@ -45,13 +49,13 @@ public class IssueController {
                     (projectService.findOne(project_id), title, description, reporter);
 
             IssueStatus issueStatus = IssueStatus.createIssueStatus
-                    (issue, priority, "new", "PL", false, null);
+                    (issue, priority, "new", null, false, null);
+
+            issueService.saveIssue(issue);
 
             issueStatusService.saveStatus(issueStatus);
 
             issueStatusService.setIssueForIssueStatus(issueStatus.getId(), issue);
-
-            issueService.saveIssue(issue);
 
             return true;
         }
@@ -97,5 +101,36 @@ public class IssueController {
         Long issueId = Long.parseLong(request.get("id"));
 
         return issueService.findOne(issueId);
+    }
+
+    @PostMapping("/search")
+    public List<Issue> searchIssue(@RequestBody Map<String, String> request){
+        String property = request.get("property");
+        String searchWord = request.get("searchWord");
+
+        return switch (property) {
+            case "assignee" -> issueService.findIssuesByAssignee(searchWord);
+            case "title" -> issueService.findIssuesByTitle(searchWord);
+            case "status" -> issueService.findIssuesByStatus(searchWord);
+            case "reporter" -> issueService.findIssuesByReporter(searchWord);
+            default -> null;
+        };
+
+    }
+
+
+    @PostMapping("/statistic")
+    public Map<Integer, Long> statisticIssue(@RequestBody Map<String, String> issueRequest) {
+        Long project_id = Long.parseLong(issueRequest.get("project_id"));
+        String property = issueRequest.get("property");
+
+        if(property.equals("daily")){
+            return issueService.getDailyIssueCounts(project_id);
+        }
+        else if(property.equals("month")){
+            return issueService.getMonthlyIssueCounts(project_id);
+        }
+        else
+            return null;
     }
 }

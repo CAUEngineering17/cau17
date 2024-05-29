@@ -5,6 +5,8 @@ import sw.swe.domain.*;
 import sw.swe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +30,7 @@ public class UserService {
 
     private void validateDuplicateUser(User user) {
         List<User> findUsers = userRepository.findByName(user.getUserName());
+        System.out.println(findUsers.isEmpty());
         if (!findUsers.isEmpty() || user.getUserName().equals(Admin.id) ) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }

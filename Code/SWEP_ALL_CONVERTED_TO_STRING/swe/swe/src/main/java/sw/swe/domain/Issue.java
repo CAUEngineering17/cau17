@@ -25,20 +25,18 @@ public class Issue {
     private Project project;
 
     @JsonProperty("project_id")
-    public Long getProjectId() {
-        return project != null ? project.getId() : null;
-    }
+    public Long getProjectID() { return project != null ? project.getId() : null; }
 
     private String title;
     private String description;
     private String reporter;
     private String reportedDate;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue",cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<IssueComment> commentList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "issue", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "issue", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JsonUnwrapped  // Json 출력시에 추가로 issuestatus 필드까지 출력
     private IssueStatus status;
 
