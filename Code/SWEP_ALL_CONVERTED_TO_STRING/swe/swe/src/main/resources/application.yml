@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/database?useSSL=false&serverTimezone=UTC
     username: root  # MySQL 사용자 이름으로 변경
-    password: 12345678  # MySQL 비밀번호로 변경
+    password: root  # MySQL 비밀번호로 변경
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create  # MySQL의 경우 `update` 또는 `validate` 등을 사용 권장
+      ddl-auto: update  # MySQL의 경우 `update` 또는 `validate` 등을 사용 권장
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL 버전에 맞는 Dialect 설정

@@ -59,6 +59,13 @@ public class IssueCommentController {
     public List<IssueComment> listComments(@RequestBody Map<String, String> issueRequest) {
         Long issue_id = Long.parseLong(issueRequest.get("issue_id"));
 
+        List<IssueComment> issueComments = issueCommentService.findByIssueId(issue_id);
+
+        for (IssueComment issueComment : issueComments) {
+            issueComment.setUserType(
+                    userService.findUserByName(issueComment.getCommenter()).get(0).getUserType());
+        }
+
         return commentService.findByIssueId(issue_id);
     }
 

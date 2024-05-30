@@ -40,27 +40,26 @@ public class IssueRepository {
     }
 
     public List<Issue> findByAssignee(String assignee) {
-        return em.createQuery("SELECT i FROM Issue i JOIN i.status s WHERE s.assignee = :assignee", Issue.class)
-                .setParameter("assignee", assignee)
+        return em.createQuery("SELECT i FROM Issue i JOIN i.status s WHERE LOWER(s.assignee) LIKE LOWER(:assignee)", Issue.class)
+                .setParameter("assignee", "%" + assignee + "%")
                 .getResultList();
     }
 
     public List<Issue> findByStatus(String status) {
-        return em.createQuery("SELECT i FROM Issue i JOIN i.status s WHERE s.status = :status", Issue.class)
-                .setParameter("status", status)
+        return em.createQuery("SELECT i FROM Issue i JOIN i.status s WHERE LOWER(s.status) LIKE LOWER(:status)", Issue.class)
+                .setParameter("status", "%" + status + "%")
                 .getResultList();
     }
 
     public List<Issue> findByReporter(String reporter) {
-        return em.createQuery("SELECT i FROM Issue i WHERE i.reporter = :reporter", Issue.class)
-                .setParameter("reporter", reporter)
+        return em.createQuery("SELECT i FROM Issue i WHERE LOWER(i.reporter) LIKE LOWER(:reporter)", Issue.class)
+                .setParameter("reporter", "%" + reporter + "%")
                 .getResultList();
     }
 
-
     public List<Issue> findByTitle(String title) {
-        return em.createQuery("select i from Issue i where i.title = :title", Issue.class)
-                .setParameter("title", title)
+        return em.createQuery("SELECT i FROM Issue i WHERE LOWER(i.title) LIKE LOWER(:title)", Issue.class)
+                .setParameter("title", "%" + title + "%")
                 .getResultList();
     }
 
