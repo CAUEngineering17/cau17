@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -9,14 +8,28 @@ import {
   Typography,
 } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AdminStatistic = () => {
+  const [projects, setProjects] = useState([]);
+  const [issues, setIssues] = useState([]);
   const [projectId, setProjectId] = useState('');
   const [property, setProperty] = useState('daily');
   const [chartData, setChartData] = useState(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   useEffect(() => {
     if (projectId) {
@@ -24,9 +37,19 @@ const AdminStatistic = () => {
     }
   }, [projectId, property]);
 
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/projects');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+    }
+  };
+
   const fetchStatistics = async () => {
     try {
-      const response = await fetch('http://localhost:8080/statistic', {
+      const response = await fetch('http://localhost:8080/issues/statistic', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,6 +65,29 @@ const AdminStatistic = () => {
       }
     } catch (error) {
       console.error('Error fetching statistics:', error);
+    }
+  };
+
+  const fetchIssues = async () => {
+    const username = localStorage.getItem('user');
+    if (username) {
+      try {
+        const response = await fetch('http://localhost:8080/issues', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: username }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        setIssues(data);
+      } catch (error) {
+        console.error('Failed to fetch issues:', error);
+      }
+    } else {
+      console.error('User not found');
     }
   };
 
@@ -86,10 +132,11 @@ const AdminStatistic = () => {
             label="Project ID"
             onChange={handleProjectIdChange}
           >
-            {/* Add project options here */}
-            <MenuItem value={1}>Project 1</MenuItem>
-            <MenuItem value={2}>Project 2</MenuItem>
-            <MenuItem value={3}>Project 3</MenuItem>
+            {projects.map((project) => (
+              <MenuItem key={project.id} value={project.id}>
+                {project.title}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
