@@ -102,11 +102,11 @@ public class IssueController {
 //    }
 //
 //
-//    @GetMapping("/project/{projectId}")
-//    public List<Issue> getIssuesByProjectId(@PathVariable Long projectId) {
-//        return issueService.findIssuesByProjectId(projectId);
-//    }
-//
+    @GetMapping("/project/{projectId}")
+    public List<Issue> getIssuesByProjectId(@PathVariable Long projectId) {
+        return issueService.findIssuesByProjectId(projectId);
+    }
+
 //    @DeleteMapping("/{id}")
 //    public void deleteIssue(@PathVariable Long id) {
 //        issueService.deleteIssue(id);
