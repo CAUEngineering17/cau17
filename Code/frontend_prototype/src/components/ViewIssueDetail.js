@@ -330,7 +330,7 @@ const ViewIssueDetail = () => {
         {comments.map((comment) => (
           <Grid item xs={12} key={comment.id}>
             <Typography variant="body2">
-              <strong>{comment.commenter}:</strong> {comment.comment}
+              <strong>{comment.commenter}({comment.userType}):</strong> {comment.comment}
             </Typography>
             <Divider sx={{ my: 1 }} />
           </Grid>

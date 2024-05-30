@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 
 const ViewIssues = () => {
   const [issues, setIssues] = useState([]);
+  const [projectId, setProjectId] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,16 +13,27 @@ const ViewIssues = () => {
       const username = localStorage.getItem('user');
       if (username) {
         try {
-          const response = await fetch('http://localhost:8080/issues', {
-            method: 'POST',
+          const usersResponse = await fetch('http://localhost:8080/users');
+          const usersData = await usersResponse.json();
+          const user = usersData.find(user => user.userName === username);
+          if (user) {
+            const userId = user.id;
+            const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
+            const userData = await userResponse.json();
+
+            setProjectId(userData.project_id);
+          } else {
+            console.error('User not found');
+          }
+
+          const response = await fetch(`http://localhost:8080/issues/project/${projectId}`, {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id: username }),
           });
 
           const data = await response.json();
-          console.log(data);
           setIssues(data);
         } catch (error) {
           console.error('Failed to fetch issues:', error);
@@ -32,7 +44,7 @@ const ViewIssues = () => {
     };
 
     fetchIssues();
-  }, []);
+  }, [projectId]);
 
   const handleRowClick = (id) => {
     navigate(`/view-issues/${id}`);
