@@ -75,6 +75,27 @@ public class IssueController {
         return issueService.findByUsername(username);
     }
 
+    /**
+     * 모든 이슈 출력
+     * @return
+     */
+    @GetMapping
+    public List<Issue> listAllIssues() {
+        return issueService.findAllIssues();
+    }
+
+    /**
+     * 프로젝트 id를 받아서 이슈 리스트 모두 출력
+     * @param projectRequest
+     * @return
+     */
+    @GetMapping("/projectid")
+    public List<Issue> listIssuesInProject(Map<String, String> projectRequest) {
+        Long project_id = Long.parseLong(projectRequest.get("project_id"));
+
+        return issueService.findIssuesByProjectId(project_id);
+    }
+
 //    @GetMapping("/{id}")
 //    public Issue getIssue(@PathVariable Long id) {
 //        return issueService.findOne(id);
