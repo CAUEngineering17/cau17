@@ -31,46 +31,104 @@ public class IssueServiceTest {
     @Autowired
     private IssueCommentService issueCommentService;
 
-    @Rollback(false)
     @Test
-    public void 이슈생성() throws Exception{
+    public void testSaveIssue() {
         Issue issue = new Issue();
-        issue.setTitle("Futura Free");
-        issue.setDescription("Last Track");
-        issue.setReporter("Frank");
-        issue.setReportedDate(String.valueOf(LocalDateTime.now()));
+        issue.setTitle("Test Issue");
+        issue.setDescription("This is a test issue.");
 
-
-
-        Long tmpId = issueService.saveIssue(issue);
-        assertEquals(issue, issueRepository.findOne(tmpId));
-    }
-
-    @Rollback(false)
-    @Test
-    public void 코멘트추가() throws Exception{
-        IssueComment issuecomment = new IssueComment();
-        issuecomment.setComment("new comment");
-        issuecomment.setCommenter("Frank");
-        issuecomment.setCommentedDate("2024-05-05");
-
-        Long tmpId = issueCommentService.saveComment(issuecomment);
-
-        Issue issue = issueRepository.findOne(1L);
-
-        issue.addIssueComment(issuecomment);
-
+        Long issueId = issueService.saveIssue(issue);
+        assertNotNull(issueId);
     }
 
     @Test
-    public void 이슈와프로젝트연결() throws Exception{
-        List<Issue> issues = issueRepository.findByTitle("Nikes");
+    public void testSetProjectForIssue() {
+        Long issueId = 1L; // 연결할 이슈 ID로 대체 (현재 1L을 유지해도 됨)
+        Long projectId = 1L; // 연결할 프로젝트 ID로 대체 (위와 동일)
+
+        Project project = projectService.findOne(projectId);
+        assertNotNull(project);
+
+        issueService.setProjectForIssue(issueId, project);
+
+        Issue issue = issueService.findOne(issueId);
+        assertNotNull(issue);
+        assertEquals(projectId, issue.getProject().getId());
+    }
+
+    @Test
+    public void testFindIssueById() {
+        Long issueId = 1L; // 존재하는 이슈 ID로 대체 (1L 유지해도 돼)
+        Issue issue = issueService.findOne(issueId);
+        assertNotNull(issue);
+        assertEquals(issueId, issue.getId());
+    }
+
+    @Test
+    public void testDeleteIssue() {
+        Long issueId = 1L; // 삭제할 이슈 ID로 대체
+        issueService.deleteIssue(issueId);
+        assertNull(issueService.findOne(issueId));
+    }
+    @Test
+    public void testFindAllIssues() {
+        List<Issue> issues = issueService.findAllIssues();
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
+    }
+
+    @Test
+    public void testFindByProjectId() {
+        Long projectId = 1L; // 존재하는 프로젝트 ID로 대체
+        List<Issue> issues = issueService.findIssuesByProjectId(projectId);
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
         for (Issue issue : issues) {
-            List<Project> projects = projectService.findProjectsByTitle("Blonde");
-            for (Project project : projects) {
-                issue.setProject(project);
-                assertEquals(issue.getProject(), project);
-            }
+            assertEquals(projectId, issue.getProject().getId());
+        }
+    }
+
+    @Test
+    public void testFindIssuesByAssignee() {
+        String assignee = "userB"; // 테스트 진행자의 DB 내 존재하는 assignee로 대체하세요
+        List<Issue> issues = issueService.findIssuesByAssignee(assignee);
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
+        for (Issue issue : issues) {
+            assertEquals(assignee, issue.getStatus().getAssignee());
+        }
+    }
+
+    @Test
+    public void testFindIssuesByStatus() {
+        String status = "new"; // 테스트 진행자의 DB 내 존재하는 status로 대체
+        List<Issue> issues = issueService.findIssuesByStatus(status);
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
+        for (Issue issue : issues) {
+            assertEquals(status, issue.getStatus().getStatus());
+        }
+    }
+
+    @Test
+    public void testFindIssuesByReporter() {
+        String reporter = "userG"; // 테스트 진행자의 DB 내 존재하는 reporter로 대체
+        List<Issue> issues = issueService.findIssuesByReporter(reporter);
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
+        for (Issue issue : issues) {
+            assertEquals(reporter, issue.getReporter());
+        }
+    }
+
+    @Test
+    public void testFindIssuesByTitle() {
+        String title = "Project A"; // 테스트 진행자의 DB 내 존재하는 title로 대체
+        List<Issue> issues = issueService.findIssuesByTitle(title);
+        assertNotNull(issues);
+        assertFalse(issues.isEmpty());
+        for (Issue issue : issues) {
+            assertTrue(issue.getTitle().toLowerCase().contains(title.toLowerCase()));
         }
     }
 }

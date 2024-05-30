@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/database?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC
     username: root  # MySQL 사용자 이름으로 변경
     password: root  # MySQL 비밀번호로 변경
     driver-class-name: com.mysql.cj.jdbc.Driver
