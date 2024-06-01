@@ -66,6 +66,18 @@ public class IssueStatusController {
     }
 
     /**
+     * assignee 추천
+     * @param recommendRequest
+     * @return
+     */
+    @PostMapping("/recommend")
+    public List<String> recommendAssignee(@RequestBody Map<String, String> recommendRequest){
+        Long project_id = Long.parseLong(recommendRequest.get("project_id"));
+
+        return issueStatusService.recommendAssignee(project_id);
+    }
+
+    /**
      * status 변경
      * @param statusRequest
      * @return

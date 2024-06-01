@@ -81,7 +81,15 @@ public class IssueService {
 
         List<IssueStatus> issueStatuses = new ArrayList<>();
         if(usertype.equals("dev")) {
-            issueStatuses = issueStatusService.findByAssignee(username);
+            // findByAssignee로 배정된 이슈를 가져옴
+            List<IssueStatus> assignedIssues = issueStatusService.findByAssignee(username);
+            // findByStatus로 "fixed"가 아닌 이슈를 가져옴
+            List<IssueStatus> notFixedIssues = issueStatusService.findByStatus("fixed");
+
+            // assignedIssues에서 notFixedIssues를 제외한 이슈를 필터링
+            issueStatuses = assignedIssues.stream()
+                    .filter(issue -> !notFixedIssues.contains(issue))
+                    .collect(Collectors.toList());
         }
         else if(usertype.equals("tester")) {
             issueStatuses = issueStatusService.findByStatus("fixed");
