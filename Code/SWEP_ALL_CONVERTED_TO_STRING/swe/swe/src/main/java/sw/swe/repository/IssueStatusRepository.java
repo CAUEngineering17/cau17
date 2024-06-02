@@ -86,11 +86,11 @@ public class IssueStatusRepository {
     public List<String> findUnassignedUsers(List<String> topFixers) {
         // 3. Find currently unassigned fixers
         TypedQuery<String> query = em.createQuery(
-                "SELECT u.userName " +
+                    "SELECT u.userName " +
                         "FROM User u " +
                         "WHERE u.userName IN :topFixers AND u.userName NOT IN " +
                         "(SELECT is.assignee FROM IssueStatus is WHERE is.assignee IS NOT NULL " +
-                        "AND is.status != 'fixed')", String.class);
+                        "AND (is.status != 'fixed' AND is.status != 'resolved' AND is.status != 'closed'))", String.class);
         query.setParameter("topFixers", topFixers);
 
         return query.getResultList();
@@ -99,6 +99,7 @@ public class IssueStatusRepository {
     public List<String> recommendFixers(Long project_id) {
         List<String> topFixers = findTopFixers(project_id);
         List<String> unassignedFixers = findUnassignedUsers(topFixers);
+        System.out.println(unassignedFixers);
 
         // 4. Return the top 3 unassigned fixers
         if (unassignedFixers.size() > 3) {
