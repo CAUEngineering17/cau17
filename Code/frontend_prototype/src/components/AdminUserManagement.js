@@ -7,6 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Container,
   Table,
   TableBody,
   TableCell,
@@ -14,7 +15,11 @@ import {
   TableRow,
   TextField,
   Typography,
+  Paper,
+  IconButton,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -25,7 +30,7 @@ const AdminUserManagement = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
-  const [projectMap, setProjectMap] = useState({}); // 프로젝트 ID와 제목을 매핑하는 객체
+  const [projectMap, setProjectMap] = useState({}); // 객체
 
   useEffect(() => {
     fetchUsers();
@@ -48,9 +53,9 @@ const AdminUserManagement = () => {
       const data = await response.json();
       setProjects(data);
 
-      // 프로젝트 ID와 제목을 매핑하는 객체 생성
+      // ID와 제목을 매핑하는 객체 생성
       const projectMap = {};
-      data.forEach(project => {
+      data.forEach((project) => {
         projectMap[project.id] = project.title;
       });
       setProjectMap(projectMap);
@@ -65,12 +70,12 @@ const AdminUserManagement = () => {
       alert('Passwords do not match');
       return;
     }
-    const newUser = { 
-      id: username, 
-      password: password, 
+    const newUser = {
+      id: username,
+      password: password,
       confirmPassword: password,
-      role: role, 
-      project: selectedProject 
+      role: role,
+      project: selectedProject,
     };
     try {
       const response = await fetch('http://localhost:8080/users/create', {
@@ -121,128 +126,145 @@ const AdminUserManagement = () => {
 
   const handleCheckboxChange = (id) => {
     setSelectedUsers((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((user) => user !== id)
-        : [...prevSelected, id]
+      prevSelected.includes(id) ? prevSelected.filter((user) => user !== id) : [...prevSelected, id]
     );
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h5" gutterBottom>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Paper elevation={4} sx={{ p: 0, borderRadius: 2 }}>
+    <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
         Manage User Accounts
       </Typography>
-      <form onSubmit={handleAddUser}>
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            id="username"
-            label="Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            id="password"
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <TextField
-            id="confirm-password"
-            label="Confirm Password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </FormControl>
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel htmlFor="role">Role</InputLabel>
-          <Select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-          >
-            <MenuItem value="PL">PL</MenuItem>
-            <MenuItem value="dev">dev</MenuItem>
-            <MenuItem value="tester">tester</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel htmlFor="projects">Projects</InputLabel>
-          <Select
-            id="projects"
-            value={selectedProject}
-            onChange={(e) => setSelectedProject(e.target.value)}
-            required
-          >
-            {projects.map((project) => (
-              <MenuItem key={project.id} value={project.title}>
-                {project.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button variant="contained" type="submit">
-            Add
-          </Button>
-        </Box>
-      </form>
-      <Table sx={{ mt: 4 }} aria-label="simple table">
-        <TableHead>
-          <TableRow sx={{ backgroundColor: '#e0e0e0' }}>
-            <TableCell padding="checkbox">
-              <Checkbox />
-            </TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Password</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell>join-Project</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.userName}>
+      <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: 800, mb: 4 }}>
+        <Typography variant="h6" gutterBottom>
+          Add New User
+        </Typography>
+        <form onSubmit={handleAddUser}>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              id="username"
+              label="Username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <TextField
+              id="confirm-password"
+              label="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel htmlFor="role">Role</InputLabel>
+            <Select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <MenuItem value="PL">PL</MenuItem>
+              <MenuItem value="dev">dev</MenuItem>
+              <MenuItem value="tester">tester</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel htmlFor="projects">Projects</InputLabel>
+            <Select
+              id="projects"
+              value={selectedProject}
+              onChange={(e) => setSelectedProject(e.target.value)}
+              required
+            >
+              {projects.map((project) => (
+                <MenuItem key={project.id} value={project.id}>
+                  {project.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              type="submit"
+              startIcon={<SaveIcon />}
+              sx={{ backgroundColor: '#2196F3', color: '#fff' }}
+            >
+              Add User
+            </Button>
+          </Box>
+        </form>
+      </Paper>
+      <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: 800 }}>
+        <Typography variant="h6" gutterBottom>
+          User List
+        </Typography>
+        <Table>
+          <TableHead>
+            <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
-                  checked={selectedUsers.includes(user.userName)}
-                  onChange={() => handleCheckboxChange(user.userName)}
+                  indeterminate={selectedUsers.length > 0 && selectedUsers.length < users.length}
+                  checked={users.length > 0 && selectedUsers.length === users.length}
+                  onChange={(e) =>
+                    setSelectedUsers(e.target.checked ? users.map((user) => user.userName) : [])
+                  }
                 />
               </TableCell>
-              <TableCell sx={{ borderRight: '1px solid #e0e0e0' }}>
-                {user.userName}
-              </TableCell>
-              <TableCell sx={{ borderRight: '1px solid #e0e0e0' }}>
-                {user.userPW}
-              </TableCell>
-              <TableCell sx={{ borderRight: '1px solid #e0e0e0' }}>
-                {user.userType}
-              </TableCell>
-              <TableCell>{projectMap[user.project_id]}</TableCell> {/* 프로젝트 제목 표시 */}
+              <TableCell>Username</TableCell>
+              <TableCell>Password</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Project</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button
-          variant="contained"
-          color="error"
-          type="button"
-          onClick={handleDeleteSelectedUsers}
-        >
-          Remove selected Accounts
-        </Button>
-      </Box>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.userName}>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selectedUsers.includes(user.userName)}
+                    onChange={() => handleCheckboxChange(user.userName)}
+                  />
+                </TableCell>
+                <TableCell>{user.userName}</TableCell>
+                <TableCell>{user.userPW}</TableCell>
+                <TableCell>{user.userType}</TableCell>
+                <TableCell>{projectMap[user.project_id]}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={handleDeleteSelectedUsers}
+          >
+            Remove Selected Accounts
+          </Button>
+        </Box>
+      </Paper>
     </Box>
+    </Paper>
+    </Container>
   );
 };
 

@@ -59,7 +59,7 @@ const App = () => {
   return (
     <Router>
       <div className="app">
-        <Header isLoggedIn={isLoggedIn} isAdmin={isAdmin} onLogout={handleLogout} onLogin={handleLogin} />
+        <Header isLoggedIn={isLoggedIn} isAdmin={isAdmin} loggedInUser={localStorage.getItem('user')} onLogout={handleLogout} onLogin={handleLogin} />
         {!isLoading && (
           <Routes>
             <Route

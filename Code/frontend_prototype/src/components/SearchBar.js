@@ -5,7 +5,7 @@ function SearchBar({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchBy, setSearchBy] = useState('title'); // Default search by option
 
-  const searchOptions = ['title', 'assignee', 'status', 'reporter']; // Available search options
+  const searchOptions = ['title', 'reporter', 'status', 'assignee'];
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -32,33 +32,61 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-      <Typography variant="h6" sx={{ mr: 2 }}>Search:</Typography>
-
-      <FormControl sx={{ mr: 2, width: 150 }}> {/* Adjust the width here */}
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        p: 2,
+        borderRadius: 2,
+        backgroundColor: '#f5f5f5',
+        boxShadow: 1,
+        '& .MuiInputLabel-root': {
+          fontWeight: 'bold',
+        },
+        '& .MuiButton-contained': {
+          backgroundColor: '#1976d2',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#1565c0',
+          },
+        },
+      }}
+    >
+      <Typography variant="h6" sx={{ mr: 3, color: '#424242' }}>Search Issues:</Typography>
+      
+      <FormControl variant="outlined" sx={{ mr: 2, width: 200 }}>
         <InputLabel id="search-by-label">Search By</InputLabel>
         <Select
           labelId="search-by-label"
           id="search-by-select"
           value={searchBy}
-          label="Search By"
           onChange={handleSearchByChange}
+          label="Search By"
         >
           {searchOptions.map((option) => (
             <MenuItem key={option} value={option}>
-              {option}
+              {option.charAt(0).toUpperCase() + option.slice(1)}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
       <TextField
+        variant="outlined"
         placeholder="Enter your search term"
         value={searchTerm}
         onChange={handleSearchChange}
         sx={{ flexGrow: 1, mr: 2 }}
       />
-      <Button variant="contained" onClick={handleSearchSubmit}>
+
+      <Button
+        variant="contained"
+        onClick={handleSearchSubmit}
+        sx={{
+          textTransform: 'none',
+          padding: '6px 16px',
+        }}
+      >
         Search
       </Button>
     </Box>

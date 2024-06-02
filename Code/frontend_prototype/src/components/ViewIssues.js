@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, IconButton, Tooltip} from '@mui/material';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { styled } from '@mui/system';
 import SearchBar from './SearchBar';
+import PriorityBadge from './PriorityBadge'
+
+const StyledTableCell = styled(TableCell)({
+  fontWeight: 'bold',
+  backgroundColor: '#fafafa',
+  borderBottom: '2px solid #e0e0e0',
+  color: '#424242',
+  textAlign: 'center',
+});
 
 const ViewIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -55,38 +66,53 @@ const ViewIssues = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Box sx={{ mt: 2 }}>
+<TableContainer component={Paper} sx={{ mt: 2, borderRadius: 2, boxShadow: 3 }}>
+      <Box sx={{ p: 2 }}>
         <SearchBar onSearch={handleSearch} />
-        <Table>
-          <TableHead sx={{ backgroundColor: '#e0e0e0' }}>
-            <TableRow>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Issue</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Title</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Reporter</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Reported Date</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Priority</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Status</TableCell>
-              <TableCell sx={{ borderRight: '1px solid #aaaaaa' }}>Assignee</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {issues.map((issue) => (
-              <TableRow key={issue.id} hover onClick={() => handleRowClick(issue.id)} style={{ cursor: 'pointer' }}>
-                <TableCell>{issue.id}</TableCell>
-                <TableCell>{issue.title}</TableCell>
-                <TableCell>{issue.reporter}</TableCell>
-                <TableCell>{issue.reportedDate}</TableCell>
-                <TableCell>{issue.priority}</TableCell>
-                <TableCell>{issue.status}</TableCell>
-                <TableCell>{issue.assignee}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </Box>
-    </TableContainer>
-  );
+      <Table>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>Issue</StyledTableCell>
+            <StyledTableCell>Title</StyledTableCell>
+            <StyledTableCell>Priority</StyledTableCell>
+            <StyledTableCell>Status</StyledTableCell>
+            <StyledTableCell>Reported Date</StyledTableCell>
+            <StyledTableCell>Reporter</StyledTableCell>
+            <StyledTableCell>Assignee</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {issues.map((issue) => (
+            <TableRow
+              key={issue.id}
+              hover
+              onClick={() => handleRowClick(issue.id)}
+              sx={{
+                cursor: 'pointer',
+                '&:nth-of-type(even)': { backgroundColor: '#f9f9f9' },
+                '&:hover': { backgroundColor: '#eceff1' },
+                transition: 'background-color 0.3s',
+              }}
+            >
+              <TableCell sx={{ textAlign: 'center' }}>{issue.id}</TableCell>
+              <TableCell>
+                <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#424242' }}>
+                  {issue.title}
+                </Typography>
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>
+                <PriorityBadge priority={issue.priority} />
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{issue.status}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{issue.reportedDate}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{issue.reporter}</TableCell>
+              <TableCell sx={{ textAlign: 'center' }}>{issue.assignee}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>  );
 };
 
 export default ViewIssues;

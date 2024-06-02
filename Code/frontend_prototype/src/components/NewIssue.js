@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, MenuItem, Select, InputLabel, FormControl, Button, Container, Grid, Box } from '@mui/material';
+import { TextField, MenuItem, Select, InputLabel, FormControl, Button, Container, Grid, Box, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import RichTextEditor from './RichTextEditor';
 
@@ -41,11 +41,11 @@ const NewIssue = () => {
     event.preventDefault();
 
     const newIssue = {
-      title: title,
-      description: description,
+      title,
+      description,
       project_id: projectId,
-      priority: priority,
-      reporter: reporter,
+      priority,
+      reporter,
     };
 
     try {
@@ -71,51 +71,57 @@ const NewIssue = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <h2>새로운 이슈 작성하기</h2>
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                New issue
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Title"
+                variant="outlined"
+                fullWidth
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+                <InputLabel>Priority</InputLabel>
+                <Select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  label="Priority"
+                >
+                  <MenuItem value="blocker">Blocker</MenuItem>
+                  <MenuItem value="critical">Critical</MenuItem>
+                  <MenuItem value="major">Major</MenuItem>
+                  <MenuItem value="minor">Minor</MenuItem>
+                  <MenuItem value="trivial">Trivial</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <RichTextEditor
+                value={description}
+                onChange={setDescription}
+                sx={{ height: 250, mb: 2 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Add issue
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="제목"
-              variant="outlined"
-              fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <Box sx={{ mb: 6 }}>
-              <RichTextEditor value={description} onChange={setDescription} sx={{ height: 200 }} />
-            </Box>
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>우선 순위</InputLabel>
-              <Select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                label="우선 순위"
-              >
-                <MenuItem value="blocker">blocker</MenuItem>
-                <MenuItem value="critical">critical</MenuItem>
-                <MenuItem value="major">major</MenuItem>
-                <MenuItem value="minor">minor</MenuItem>
-                <MenuItem value="trivial">trivial</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              이슈 만들기
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </Paper>
     </Container>
   );
 };

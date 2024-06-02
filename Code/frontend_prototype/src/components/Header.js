@@ -1,38 +1,45 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Link } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Login from './Login';
 
-const Header = ({ isLoggedIn, isAdmin, onLogout, onLogin }) => {
+const Header = ({ isLoggedIn, isAdmin, loggedInUser, onLogout, onLogin }) => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#2196F3' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#333', padding: '0.5rem 0' }}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'white' }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'white', fontWeight: 'bold' }}>
           Ticket
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {isLoggedIn ? (
             <>
-              <Button variant="contained" onClick={onLogout} sx={{ mb: 2 }}>
-                Logout
-              </Button>
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mr: 4 }}>
+                <AccountCircleIcon sx={{ color: 'white', mr: 1, fontSize: 30 }} />
+                <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
+                  {loggedInUser}
+                </Typography>
+                <Button sx={{ ml: 2, color: '#fff', borderColor: '#fff' }} variant="outlined" onClick={onLogout}>
+                  Logout
+                </Button>
+              </Box>
+              <Box>
                 {!isAdmin && (
-                  <div>
-                    <Link href="/view-issues" underline="none" color="inherit">
-                      <Button variant="text" sx={{ color: 'white' }}>
+                  <>
+                    <Link href="/view-issues" underline="none" color="inherit" sx={{ mr: 3 }}>
+                      <Button variant="text" sx={{ color: 'white', fontWeight: 'bold' }}>
                         View Issues
                       </Button>
                     </Link>
                     <Link href="/new-issue" underline="none" color="inherit">
-                      <Button variant="text" sx={{ color: 'white' }}>
+                      <Button variant="text" sx={{ color: 'white', fontWeight: 'bold' }}>
                         New Issue
                       </Button>
                     </Link>
-                  </div>
+                  </>
                 )}
                 {isAdmin && (
                   <Link href="/admin" underline="none" color="inherit">
-                    <Button variant="text" sx={{ color: 'white' }}>
+                    <Button variant="text" sx={{ color: 'white', fontWeight: 'bold' }}>
                       Admin
                     </Button>
                   </Link>

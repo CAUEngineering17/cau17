@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Typography, Grid, TextField, Button, Paper, Divider, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Typography, Grid, TextField, Button, Paper, Divider, MenuItem, Select, FormControl, InputLabel, Card, CardContent, Box } from '@mui/material';
+import { AccountCircle, PriorityHigh, AssignmentInd, Event, Person, CheckCircle } from '@mui/icons-material';
+
 
 const ViewIssueDetail = () => {
   const [defectData, setDefectData] = useState(null);
@@ -95,12 +97,10 @@ const ViewIssueDetail = () => {
           const response = await fetch('http://localhost:8080/users');
           const users = await response.json();
    
-          console.log(defectData)
           // 프로젝트 ID가 일치하고 userType이 'dev'인 유저만 필터링
           const developers = users.filter(
             (user) => user.project_id === projectId && user.userType === 'dev'
           );
-          console.log(developers);
           setProjectDevelopers(developers);
         } catch (error) {
           console.error('Error fetching project developers:', error);
@@ -236,12 +236,12 @@ const ViewIssueDetail = () => {
         <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
           <Grid item>
             <FormControl fullWidth>
-              <InputLabel id="assignee-select-label">담당자 선택</InputLabel>
+              <InputLabel id="assignee-select-label">Assignee</InputLabel>
               <Select
                 labelId="assignee-select-label"
                 id="assignee-select"
                 value={selectedAssignee}
-                label="담당자 선택"
+                label="Assignee"
                 onChange={handleAssigneeChange}
               >
                 {projectDevelopers.map((developer) => (
@@ -254,7 +254,7 @@ const ViewIssueDetail = () => {
           </Grid>
           <Grid item>
             <Button variant="contained" onClick={handleAssigneeSubmit} disabled={!selectedAssignee}>
-              담당자 할당
+              Assignee allocate
             </Button>
           </Grid>
         </Grid>
@@ -269,70 +269,99 @@ const ViewIssueDetail = () => {
 
   return (
     <Paper elevation={3} sx={{ p: 3, maxWidth: 800, margin: '20px auto' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
-            #{defectData.title}
-          </Typography>
-          <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 1 }}>
-            25 분 전에 업데이트
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>작성자:</strong> {defectData.reporter}
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>우선 순위:</strong> {defectData.priority}
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>담당자:</strong> {defectData.assignee}
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>상태:</strong> {defectData.status}
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>해결자:</strong> {defectData.fixer || '-'}
-          </Typography>
-        </Grid>
-        <Grid item xs={6}>
-          <Typography variant="body2">
-            <strong>작성 날짜:</strong> {defectData.reportedDate}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" component="h3" sx={{ mt: 2 }}>
-            이슈 설명
-          </Typography>
-          <Typography variant="body2" dangerouslySetInnerHTML={{ __html: defectData.description }} />
-        </Grid>
-      </Grid>
-      <Grid item xs={12} sx={{ textAlign: 'right' }}>
-        {renderActionButton()}
-      </Grid>
+      <Card variant="outlined" sx={{ p: 3, mt: 3, backgroundColor: '#f5f5f5', borderRadius: 2 }}>
+        <CardContent>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12}>
+              <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+                #{defectData.title}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <Person sx={{ mr: 1, color: '#3f51b5' }} />
+                <Typography variant="body1">
+                  <strong>Reporter:</strong> {defectData.reporter}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <PriorityHigh sx={{ mr: 1, color: '#f44336' }} />
+                <Typography variant="body1">
+                  <strong>Priority:</strong> {defectData.priority}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <AssignmentInd sx={{ mr: 1, color: '#4caf50' }} />
+                <Typography variant="body1">
+                  <strong>Assingee:</strong> {defectData.assignee}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <CheckCircle sx={{ mr: 1, color: '#3f51b5' }} />
+                <Typography variant="body1">
+                  <strong>Status:</strong> {defectData.status}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <AccountCircle sx={{ mr: 1, color: '#ff9800' }} />
+                <Typography variant="body1">
+                  <strong>Fixer:</strong> {defectData.fixer || '-'}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <Event sx={{ mr: 1, color: '#3f51b5' }} />
+                <Typography variant="body1">
+                  <strong>ReportedDate:</strong> {defectData.reportedDate}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider sx={{ my: 3 }} />
+              <Typography variant="h6" component="h3" sx={{ mb: 1, color: '#3f51b5' }}>
+                Description
+              </Typography>
+              <Typography variant="body2" dangerouslySetInnerHTML={{ __html: defectData.description }} />
+            </Grid>
+          </Grid>
+        </CardContent>
+        <Box sx={{ textAlign: 'right', mt: 3 }}>
+          {renderActionButton()}
+        </Box>
+      </Card>
 
       <Divider sx={{ my: 3 }} />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant="h6" component="h3">
-            댓글
+            Comments
           </Typography>
         </Grid>
         {comments.map((comment) => (
           <Grid item xs={12} key={comment.id}>
-            <Typography variant="body2">
-              <strong>{comment.commenter}({comment.userType}):</strong> {comment.comment}
-            </Typography>
-            <Divider sx={{ my: 1 }} />
+            <Card variant="outlined">
+              <CardContent style={{backgroundColor: "#F3F3F3"}}>
+                <Box display="flex" alignItems="center" mb={1}>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold', mr: 1 }}>
+                    {comment.commenter} ({comment.userType}):
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary">
+                    {comment.commentedDate}
+                  </Typography>
+                </Box>
+                <Typography variant="body2">{comment.comment}</Typography>
+              </CardContent>
+            </Card>
           </Grid>
         ))}
       </Grid>
@@ -342,7 +371,7 @@ const ViewIssueDetail = () => {
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
           <Typography variant="h6" component="h3">
-            댓글 추가
+            New comment
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -350,18 +379,18 @@ const ViewIssueDetail = () => {
             fullWidth 
             multiline 
             rows={4} 
-            placeholder="여기에 댓글을 사용할 수 있습니다." 
+            placeholder="Comments are available here." 
             value={comment} 
             onChange={handleCommentChange} 
           />
         </Grid>
         <Grid item xs={12} sx={{ textAlign: 'right' }}>
           <Button variant="contained" onClick={handleAddComment}>
-            댓글 저장
+            Save comment
           </Button>
         </Grid>
       </Grid>
-      <Button variant="contained" color="primary" onClick={() => navigate('/view-issues')}>목록으로 돌아가기</Button>
+      <Button variant="contained" color="primary" onClick={() => navigate('/view-issues')}>to List</Button>
     </Paper>
   );
 }

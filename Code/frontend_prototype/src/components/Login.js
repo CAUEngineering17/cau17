@@ -9,12 +9,12 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
   '& .MuiInputBase-input': {
     padding: '5px',
-    color: 'black',  // 입력 텍스트 색상을 검정색으로 설정
+    color: 'black',
     zIndex: 1,
   },
   '& .MuiInputLabel-root': {
     fontSize: '14px',
-    color: 'black',  // 라벨 텍스트 색상을 검정색으로 설정
+    color: 'black',
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -47,6 +47,7 @@ const Login = ({ onLogin }) => {
 
     if (data) {
       onLogin(username);
+      localStorage.setItem('user', username);
     } else {
       console.error('로그인 실패');
     }

@@ -6,6 +6,8 @@ import {
   MenuItem,
   Select,
   Typography,
+  Paper,
+  Container
 } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -68,29 +70,6 @@ const AdminStatistic = () => {
     }
   };
 
-  const fetchIssues = async () => {
-    const username = localStorage.getItem('user');
-    if (username) {
-      try {
-        const response = await fetch('http://localhost:8080/issues', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: username }),
-        });
-
-        const data = await response.json();
-        console.log(data);
-        setIssues(data);
-      } catch (error) {
-        console.error('Failed to fetch issues:', error);
-      }
-    } else {
-      console.error('User not found');
-    }
-  };
-
   const formatChartData = (data) => {
     const labels = Object.keys(data);
     const values = Object.values(data);
@@ -118,59 +97,64 @@ const AdminStatistic = () => {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        Issue Statistics
-      </Typography>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+          Issue Statistics
+        </Typography>
 
-      <Box sx={{ display: 'flex', mb: 2 }}>
-        <FormControl sx={{ mr: 2, minWidth: 120 }}>
-          <InputLabel id="project-id-label">Project ID</InputLabel>
-          <Select
-            labelId="project-id-label"
-            value={projectId}
-            label="Project ID"
-            onChange={handleProjectIdChange}
-          >
-            {projects.map((project) => (
-              <MenuItem key={project.id} value={project.id}>
-                {project.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', mb: 4 }}>
+          <FormControl sx={{ m: 2, minWidth: 200 }}>
+            <InputLabel id="project-id-label">Project</InputLabel>
+            <Select
+              labelId="project-id-label"
+              value={projectId}
+              label="Project"
+              onChange={handleProjectIdChange}
+            >
+              {projects.map((project) => (
+                <MenuItem key={project.id} value={project.id}>
+                  {project.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ minWidth: 120 }}>
-          <InputLabel id="property-label">Property</InputLabel>
-          <Select
-            labelId="property-label"
-            value={property}
-            label="Property"
-            onChange={handlePropertyChange}
-          >
-            <MenuItem value="daily">Daily</MenuItem>
-            <MenuItem value="month">Monthly</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-
-      {chartData && (
-        <Box sx={{ mt: 4 }}>
-          <Bar data={chartData} options={{
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              },
-              title: {
-                display: true,
-                text: `Issue Statistics (${property === 'daily' ? 'Daily' : 'Monthly'})`,
-              },
-            },
-          }} />
+          <FormControl sx={{ m: 2, minWidth: 200 }}>
+            <InputLabel id="property-label">Time Period</InputLabel>
+            <Select
+              labelId="property-label"
+              value={property}
+              label="Time Period"
+              onChange={handlePropertyChange}
+            >
+              <MenuItem value="daily">Daily</MenuItem>
+              <MenuItem value="month">Monthly</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
-      )}
-    </Box>
+
+        {chartData && (
+          <Box sx={{ mt: 4 }}>
+            <Bar
+              data={chartData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: `Issue Statistics (${property === 'daily' ? 'Daily' : 'Monthly'})`,
+                  },
+                },
+              }}
+            />
+          </Box>
+        )}
+      </Paper>
+    </Container>
   );
 };
 
