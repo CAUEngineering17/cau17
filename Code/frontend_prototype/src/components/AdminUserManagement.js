@@ -87,6 +87,7 @@ const AdminUserManagement = () => {
       });
 
       console.log(newUser);
+      console.log(response);
 
       if (response.ok) {
         fetchUsers();
@@ -194,7 +195,7 @@ const AdminUserManagement = () => {
               required
             >
               {projects.map((project) => (
-                <MenuItem key={project.id} value={project.id}>
+                <MenuItem key={project.id} value={project.title}>
                   {project.title}
                 </MenuItem>
               ))}
