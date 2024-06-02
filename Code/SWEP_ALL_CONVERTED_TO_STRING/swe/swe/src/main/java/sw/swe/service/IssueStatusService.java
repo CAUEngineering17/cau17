@@ -79,6 +79,10 @@ public class IssueStatusService {
         }
     }
 
+    public List<String> recommendAssignee(Long project_id){
+        return statusRepository.recommendFixers(project_id);
+    }
+
     @Transactional
     public void updateAssignee(String assignee, Long issueId) {
         statusRepository.updateAssignee(assignee, issueId);

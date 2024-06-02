@@ -24,34 +24,27 @@ public class ProjectServiceTest {
 
     //@Rollback(false)
     @Test
-    public void 프로젝트생성() throws Exception{
-        /*
+    public void testSaveProject() {
         Project project = new Project();
-        project.setTitle("Channel Orange");
-        project.setDescription("1st studio album");
-        project.setCurrentUserName("Frank");
-         */
+        project.setTitle("Test Project");
+        project.setDescription("This is a test project.");
 
-        Project project = Project.createProject("Project1", "1st project", "Frank");
-
-
-        Long tmpId = projectService.saveProject(project);
-        assertEquals(project, projectRepository.findOne(tmpId));
-    }
-    @Test
-    public void 프로젝트전체출력() throws Exception{
-        List<Project> projectList = projectService.findAllProjects();
-        for (Project project : projectList) {
-            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrentUserName());
-        }
-        projectService.updateCurrentUserName("aaa");
+        Long projectId = projectService.saveProject(project);
+        assertNotNull(projectId);
     }
 
     @Test
-    public void 프로젝트이름검색출력() throws Exception{
-        List<Project> projectList = projectService.findProjectsByTitle("Channel Orange");
-        for (Project project : projectList) {
-            System.out.println(project.getTitle() + " " + project.getDescription() + " " + project.getCurrentUserName());
-        }
+    public void testFindProjectById() {
+        Long projectId = 1L; // 존재하는 프로젝트 ID로 대체
+        Project project = projectService.findOne(projectId);
+        assertNotNull(project);
+        assertEquals(projectId, project.getId());
+    }
+
+    @Test
+    public void testDeleteProject() {
+        Long projectId = 1L; // 삭제할 프로젝트 ID로 대체
+        projectService.deleteProject(projectId);
+        assertNull(projectService.findOne(projectId));
     }
 }

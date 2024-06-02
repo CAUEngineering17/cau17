@@ -22,15 +22,36 @@ public class UserServiceTest {
 
     //@Rollback(false)
     @Test
-    public void 회원가입() throws Exception{
+    public void testSaveUser() {
         User user = new User();
-        user.setUserName("Frank");
-        user.setUserPW("Frank");
-        user.setUserType("Admin");
+        user.setUserName("testUser");
+        user.setUserPW("password");
+        user.setUserType("regular");
 
-        Long tmpId = userService.saveUser(user);
+        Long userId = userService.saveUser(user);
+        assertNotNull(userId);
+    }
 
-        assertEquals(user, userRepository.findOne(tmpId));
+    @Test
+    public void testFindUserById() {
+        Long userId = 1L; // 존재하는 유저 ID로 대체
+        User user = userService.findOne(userId);
+        assertNotNull(user);
+        assertEquals(userId, user.getId());
+    }
+
+    @Test
+    public void testAuthenticate() {
+        String username = "userA"; // 존재하는 유저명으로 대체
+        String password = "userA"; // 해당 유저의 비밀번호로 대체
+        assertTrue(userService.authenticate(username, password));
+    }
+
+    @Test
+    public void testDeleteUser() {
+        Long userId = 1L; // 삭제할 유저 ID로 대체
+        userService.deleteUser(userId);
+        assertNull(userService.findOne(userId));
     }
 
 

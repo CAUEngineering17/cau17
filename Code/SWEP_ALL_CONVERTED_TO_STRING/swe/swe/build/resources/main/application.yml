@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create  # MySQL의 경우 `update` 또는 `validate` 등을 사용 권장
+      ddl-auto: update  # MySQL의 경우 `update` 또는 `validate` 등을 사용 권장
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect  # MySQL 버전에 맞는 Dialect 설정
