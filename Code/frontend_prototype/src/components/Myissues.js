@@ -13,10 +13,9 @@ const StyledTableCell = styled(TableCell)({
   textAlign: 'center',
 });
 
-const ViewIssues = () => {
+const Myissues = () => {
   const [issues, setIssues] = useState([]);
   const [projectId, setProjectId] = useState('');
-  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,25 +23,12 @@ const ViewIssues = () => {
       const username = localStorage.getItem('user');
       if (username) {
         try {
-          const usersResponse = await fetch('http://localhost:8080/users');
-          const usersData = await usersResponse.json();
-          const user = usersData.find(user => user.userName === username);
-          if (user) {
-            const userId = user.id;
-            const userResponse = await fetch(`http://localhost:8080/users/${userId}`);
-            const userData = await userResponse.json();
-
-            setRole(userData.userType);
-            setProjectId(userData.project_id);
-          } else {
-            console.error('User not found');
-          }
-
-          const response = await fetch(`http://localhost:8080/issues/project/${projectId}`, {
-            method: 'GET',
+          const response = await fetch(`http://localhost:8080/issues`, {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({id: username}),
           });
 
           const data = await response.json();
@@ -56,10 +42,10 @@ const ViewIssues = () => {
     };
 
     fetchIssues();
-  }, [projectId, role]);
+  }, [projectId]);
 
   const handleRowClick = (id) => {
-    navigate(`/view-issues/${id}`);
+    navigate(`/my-issues/${id}`);
   };
 
   const handleSearch = (searchResults) => {
@@ -67,24 +53,10 @@ const ViewIssues = () => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 2, borderRadius: 2, boxShadow: 3 }}>
+<TableContainer component={Paper} sx={{ mt: 2, borderRadius: 2, boxShadow: 3 }}>
       <Box sx={{ p: 2 }}>
         <SearchBar onSearch={handleSearch} />
       </Box>
-      {role==='tester' && <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end' }}>
-        <Link href="/new-issue" underline="none" color="inherit">
-          <Button variant="contained" sx={{
-            fontWeight: 'bold',
-            backgroundColor: '#3f51b5',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#303f9f',
-            },
-          }}>
-            New Issue
-          </Button>
-        </Link>
-      </Box>}
       <Table>
         <TableHead>
           <TableRow>
@@ -127,8 +99,7 @@ const ViewIssues = () => {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
-  );
+    </TableContainer>  );
 };
 
-export default ViewIssues;
+export default Myissues;

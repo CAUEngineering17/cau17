@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Typography, Grid, TextField, Button, Paper, Divider, MenuItem, Select, FormControl, InputLabel, Card, CardContent, Box } from '@mui/material';
 import { AccountCircle, PriorityHigh, AssignmentInd, Event, Person, CheckCircle } from '@mui/icons-material';
+import { styled } from '@mui/system';
 
 
 const ViewIssueDetail = () => {
@@ -12,9 +13,29 @@ const ViewIssueDetail = () => {
   const [username, setUsername] = useState('');
   const [selectedAssignee, setSelectedAssignee] = useState(''); // 선택된 담당자 ID 저장
   const [projectDevelopers, setProjectDevelopers] = useState([]); // 프로젝트 개발자 목록
+  const [recommendedDeveloper, setRecommendedDeveloper] = useState(''); // 추천 개발자 상태 추가
+
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation(); // useLocation 훅 추가
+
+
+  const GlowTypography = styled(Typography)`
+  @keyframes glow {
+    0% {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff, 0 0 25px #ff00ff, 0 0 30px #ff00ff, 0 0 35px #ff00ff;
+    }
+    50% {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff;
+    }
+    100% {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff, 0 0 25px #ff00ff, 0 0 30px #ff00ff, 0 0 35px #ff00ff;
+    }
+  }
+
+  animation: glow 1.5s infinite;
+`;
 
   const fetchIssueDetails = async () => {
     try {
@@ -55,6 +76,29 @@ const ViewIssueDetail = () => {
       }
     } catch (error) {
       console.error('Error fetching comments:', error);
+    }
+  };
+
+  const fetchRecommendedDeveloper = async (projectId) => {
+    try {
+      const response = await fetch('http://localhost:8080/issue-statuses/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ project_id: projectId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length > 0) {
+          setRecommendedDeveloper(data[0]); // 추천 개발자 이름 설정
+        }
+      } else {
+        console.error('Failed to fetch recommended developer');
+      }
+    } catch (error) {
+      console.error('Error fetching recommended developer:', error);
     }
   };
 
@@ -102,6 +146,8 @@ const ViewIssueDetail = () => {
             (user) => user.project_id === projectId && user.userType === 'dev'
           );
           setProjectDevelopers(developers);
+          await fetchRecommendedDeveloper(projectId);
+
         } catch (error) {
           console.error('Error fetching project developers:', error);
         }
@@ -234,6 +280,15 @@ const ViewIssueDetail = () => {
     if (role === 'PL' && defectData.status === 'new') {
       return (
         <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
+          <Grid item align="center">
+            <Typography variant="body2" color="textSecondary">
+              Recommended:
+            </Typography>
+            <GlowTypography variant="body2" color="textSecondary" style={{ marginLeft: "20px" }}>
+              {recommendedDeveloper}
+            </GlowTypography>
+          </Grid>
+
           <Grid item>
             <FormControl fullWidth>
               <InputLabel id="assignee-select-label">Assignee</InputLabel>
@@ -390,7 +445,13 @@ const ViewIssueDetail = () => {
           </Button>
         </Grid>
       </Grid>
-      <Button variant="contained" color="primary" onClick={() => navigate('/view-issues')}>to List</Button>
+      <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate(location.pathname.startsWith('/my-issues') ? '/my-issues' : '/view-issues')}
+            >
+        to List
+      </Button>
     </Paper>
   );
 }

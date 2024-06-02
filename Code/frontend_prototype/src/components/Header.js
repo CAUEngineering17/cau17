@@ -30,9 +30,9 @@ const Header = ({ isLoggedIn, isAdmin, loggedInUser, onLogout, onLogin }) => {
                         View Issues
                       </Button>
                     </Link>
-                    <Link href="/new-issue" underline="none" color="inherit">
+                    <Link href="/my-issues" underline="none" color="inherit" sx={{ mr: 3 }}>
                       <Button variant="text" sx={{ color: 'white', fontWeight: 'bold' }}>
-                        New Issue
+                        My Issues
                       </Button>
                     </Link>
                   </>

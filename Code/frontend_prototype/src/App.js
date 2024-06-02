@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Admin from './components/Admin';
 import NewIssue from './components/NewIssue';
 import ViewIssues from './components/ViewIssues';
+import MyIssues from './components/Myissues';
 import IssueDetail from './components/ViewIssueDetail';
 import Welcome from './components/welcome';
 import './App.css';
@@ -86,6 +87,14 @@ const App = () => {
             />
             <Route
               path="/view-issues/:id"
+              element={isLoggedIn ? <IssueDetail /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/my-issues/*"
+              element={isLoggedIn ? <MyIssues /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/my-issues/:id"
               element={isLoggedIn ? <IssueDetail /> : <Navigate to="/" />}
             />
             <Route path="/" element={<Welcome />} />
