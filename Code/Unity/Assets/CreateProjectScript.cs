@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,7 +11,7 @@ public class CreateProjectScript : MonoBehaviour
     
     public void OnButtonPressed()
     {
-        var dataToSend = new { title = ProjectName.GetComponent<TextMeshPro>().text,description = ProjectDescription.GetComponent<TextMeshPro>().text,};
+        Project dataToSend = new Project{ title = ProjectName.GetComponent<TMP_InputField>().text,description = ProjectDescription.GetComponent<TMP_InputField>().text,};
         NetworkManager.Instance.SendData("projects/create",dataToSend,OnProjectCreated);
     }
 
@@ -18,12 +19,19 @@ public class CreateProjectScript : MonoBehaviour
     {
         if (result == "true")
         {
-            ProjectName.GetComponent<TextMeshPro>().text = "";
-            ProjectDescription.GetComponent<TextMeshPro>().text = "";
+            ProjectName.GetComponent<TMP_InputField>().text = String.Empty;
+            ProjectDescription.GetComponent<TMP_InputField>().text = String.Empty;
         }
         else
         {
             Debug.LogError("Failed to create project");
         }
+    }
+
+    [Serializable]
+    class Project
+    {
+        public string title;
+        public string description;
     }
 }

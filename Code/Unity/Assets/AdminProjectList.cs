@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,7 +17,7 @@ public class AdminProjectList : MonoBehaviour
 
     public void OnDeleteProject()
     {
-        NetworkManager.Instance.SendData("projects/delete",new{project_id = id},OnSuccessfulDelete);
+        NetworkManager.Instance.SendData("projects/delete",new Project_id{project_id = id},OnSuccessfulDelete);
     }
 
     public void OnSuccessfulDelete(string result)
@@ -25,5 +26,10 @@ public class AdminProjectList : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+[Serializable]
+    class Project_id
+    {
+        public string project_id;
     }
 }

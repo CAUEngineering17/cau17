@@ -20,19 +20,20 @@ public class LoginScript : MonoBehaviour
     }
     public void OnLoginButtonClicked()
     {
-        var dataToSend = new { id = UsernameInput.GetComponent<TextMeshPro>().text,password = PasswordInput.GetComponent<TextMeshPro>().text,};
+        string username = UsernameInput.GetComponent<TMP_InputField>().text;
+        string password = PasswordInput.GetComponent<TMP_InputField>().text;
+        LoginInfo dataToSend = new LoginInfo { id = username, password = password };
         NetworkManager.Instance.SendData("users/login",dataToSend,OnLogin);
     }
 
     void OnLogin(string success)
     {
-        Debug.Log(success);
-        if (success == "success")
+        if (success == "true")
         {
-            PlayerPrefs.SetString("id",UsernameInput.GetComponent<TextMeshPro>().text);
-            UsernameInput.GetComponent<TextMeshPro>().text = "";
-            PasswordInput.GetComponent<TextMeshPro>().text = "";
-            NetworkManager.Instance.SendData("users/isAdmin",new{id=UsernameInput.GetComponent<TextMeshPro>().text},OnAdmin);
+            PlayerPrefs.SetString("id",UsernameInput.GetComponent<TMP_InputField>().text);
+            UsernameInput.GetComponent<TMP_InputField>().text = String.Empty;
+            PasswordInput.GetComponent<TMP_InputField>().text = String.Empty;;
+            NetworkManager.Instance.SendData("users/isAdmin",new Id{id=PlayerPrefs.GetString("id")},OnAdmin);
         }
         else
         {
@@ -44,7 +45,7 @@ public class LoginScript : MonoBehaviour
     {
         if (isAdmin == "true")
         {
-            NetworkManager.Instance.GetData("projects",GetExistingProjects);
+            ProjectListView.GetComponent<GetExistingProjects>().Init();
             AdminPanel.SetActive(true);
         }
         else
@@ -52,30 +53,16 @@ public class LoginScript : MonoBehaviour
             ProjectsPanel.SetActive(false);
         }
     }
-
-    public void GetExistingProjects(string projects)
-    {
-        ProjectList projectList = JsonUtility.FromJson<ProjectList>(projects);
-
-        // Iterate through the list of persons
-        foreach (Project pj in projectList.projects)
-        {
-            GameObject tile = Instantiate(Resources.Load<GameObject>("Prefab/ProjectList"),ProjectListView.transform);
-            tile.GetComponent<AdminProjectList>().Init(pj.project_id,pj.description,pj.name);
-        }
-    }
     
     [Serializable]
-    public class Project
+    public class LoginInfo
     {
-        public string project_id;
-        public string name;
-        public string description;
+        public string id;
+        public string password;
     }
 
-    [Serializable]
-    public class ProjectList
+    public class Id
     {
-        public Project[] projects;
+        public string id;
     }
 }
