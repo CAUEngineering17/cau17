@@ -12,6 +12,7 @@ public class LoginScript : MonoBehaviour
     [SerializeField] private GameObject UsernameInput;
     [SerializeField] private GameObject PasswordInput;
     [SerializeField] private GameObject ProjectListView;
+    [SerializeField] private GameObject Content;
 
     void Start()
     {
@@ -47,10 +48,13 @@ public class LoginScript : MonoBehaviour
         {
             ProjectListView.GetComponent<GetExistingProjects>().Init();
             AdminPanel.SetActive(true);
+            ProjectsPanel.SetActive(false);
         }
         else
         {
-            ProjectsPanel.SetActive(false);
+            AdminPanel.SetActive(false);
+            ProjectsPanel.SetActive(true);
+            Content.GetComponent<GetIssues>().Init();
         }
     }
     

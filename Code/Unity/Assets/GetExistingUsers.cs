@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class GetExistingUsers : MonoBehaviour
 {
-    public static User[] usersList;
+    public static Dictionary<string, string> Proj= new Dictionary<string, string>();
+    public List<User> usersList;
 
     void Start()
     {
@@ -17,36 +19,30 @@ public class GetExistingUsers : MonoBehaviour
     public void Init()
     {
         NetworkManager.Instance.GetData("users",ExistingUsers);
-    }
-    public void ExistingUsers(string projects)
-    {
-        Debug.Log(projects);
-        if (projects.Length>2)
+        foreach(Transform child in transform)
         {
-            usersList = JsonUtility.FromJson<UserList>("{\"projects\":" + projects + "}").projects;
+            Destroy(child.gameObject);
+        }
+    }
+    public void ExistingUsers(string users)
+    {
+            List<User> usersList = JsonConvert.DeserializeObject<List<User>>(users);
 
             foreach (User pj in usersList)
             {
+                Proj.Add(pj.userName,pj.project_id);
                 GameObject tile = Instantiate(Resources.Load<GameObject>("Prefab/UserList"),
                     transform);
-                tile.GetComponent<AdminUsersList>().Init(pj.id, pj.password, pj.role,pj.project);
+                tile.GetComponent<AdminUsersList>().Init(pj.userName, pj.userPW, pj.userType,pj.project_id);
             }
-        }
     }
     
-    [Serializable]
     public class User
     {
         public string id;
-        public string password;
-        public string role;
-        public string project;
+        public string userName;
+        public string userPW;
+        public string userType;
+        public string project_id;
     }
-
-    [Serializable]
-    public class UserList
-    {
-        public User[] projects;
-    }
-
 }

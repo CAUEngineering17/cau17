@@ -7,17 +7,17 @@ using UnityEngine.UI;
 
 public class AdminProjectList : MonoBehaviour
 {
-    private string id;
-    public void Init(string id, string name, string description)
+    private string project_id;
+    public void Init(string id, string title, string description,string currentUserName)
     {
-        id = this.id;
-        transform.GetChild(0).GetComponent<TextMeshPro>().text = name;
-        transform.GetChild(1).GetComponent<TextMeshPro>().text = description;
+        project_id = id;
+        transform.GetChild(0).GetComponent<TMP_Text>().text = title;
+        transform.GetChild(1).GetComponent<TMP_Text>().text = description;
     }
 
     public void OnDeleteProject()
     {
-        NetworkManager.Instance.SendData("projects/delete",new Project_id{project_id = id},OnSuccessfulDelete);
+        NetworkManager.Instance.SendData("projects/delete",new Project_id{project_id = project_id},OnSuccessfulDelete);
     }
 
     public void OnSuccessfulDelete(string result)

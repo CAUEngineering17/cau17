@@ -1,15 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class GetExistingProjects : MonoBehaviour
 {
-    public static Project[] projectList;
+    public List<Project> projectList;
 
     [SerializeField] GameObject ProjectDropdown;
+    [SerializeField] GameObject ProjectDropdownStat;
     void Start()
     {
         Init();
@@ -18,37 +18,32 @@ public class GetExistingProjects : MonoBehaviour
     public void Init()
     {
         NetworkManager.Instance.GetData("projects",ExistingProjects);
+        foreach(Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
     public void ExistingProjects(string projects)
     {
-        Debug.Log(projects);
-        if (projects.Length>2)
-        {
-            projectList = JsonUtility.FromJson<ProjectList>("{\"projects\":" + projects + "}").projects;
-
+        List<Project> projectList = JsonConvert.DeserializeObject<List<Project>>(projects);
             foreach (Project pj in projectList)
             {
                 GameObject tile = Instantiate(Resources.Load<GameObject>("Prefab/ProjectList"),
                     transform);
-                tile.GetComponent<AdminProjectList>().Init(pj.project_id, pj.description, pj.name);
+                tile.transform.GetComponent<AdminProjectList>().Init(pj.id, pj.title,pj.description, pj.currentUserName);
             }
-            ProjectDropdown.GetComponent<TMP_Dropdown>().AddOptions(GetExistingProjects.projectList.Select(project => project.name).ToList());
-
-        }
+            ProjectDropdown.GetComponent<TMP_Dropdown>().AddOptions(projectList.Select(project => project.title).ToList());
+            ProjectDropdownStat.GetComponent<TMP_Dropdown>().AddOptions(projectList.Select(project => project.title).ToList());
     }
     
-    [Serializable]
     public class Project
     {
-        public string project_id;
-        public string name;
+        public string id;
+        public string title;
         public string description;
-    }
+        public string currentUserName;
 
-    [Serializable]
-    public class ProjectList
-    {
-        public Project[] projects;
+       // public List<Project> projects;
     }
 
 }

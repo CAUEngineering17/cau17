@@ -14,18 +14,19 @@ public class AddUserScript : MonoBehaviour
     
     public void OnButtonPressed()
     {
+        Debug.Log(roleObject.GetComponent<TMP_Dropdown>().options[roleObject.GetComponent<TMP_Dropdown>().value].text);
         AddUser dataToSend = new AddUser
         {
             id=idObject.GetComponent<TMP_InputField>().text,
             password=passwordObject.GetComponent<TMP_InputField>().text,
-            confirm_password=confirmpasswordObject.GetComponent<TMP_InputField>().text,
+            confirmPassword=confirmpasswordObject.GetComponent<TMP_InputField>().text,
             role=roleObject.GetComponent<TMP_Dropdown>().options[roleObject.GetComponent<TMP_Dropdown>().value].text,
             project= projectObject.GetComponent<TMP_Dropdown>().options[projectObject.GetComponent<TMP_Dropdown>().value].text
         };
-        NetworkManager.Instance.SendData("users/create",dataToSend,OnProjectCreated);
+        NetworkManager.Instance.SendData("users/create",dataToSend,OnUserCreated);
     }
 
-    public void OnProjectCreated(string result)
+    public void OnUserCreated(string result)
     {
         if (result == "true")
         {
@@ -44,7 +45,7 @@ public class AddUserScript : MonoBehaviour
     {
         public string id;
         public string password;
-        public string confirm_password;
+        public string confirmPassword;
         public string role;
         public string project;
     }

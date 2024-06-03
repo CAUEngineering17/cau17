@@ -10,11 +10,11 @@ public class AdminUsersList : MonoBehaviour
     private string username;
     public void Init(string username, string password, string role, string project)
     {
-        username = this.username;
-        transform.GetChild(0).GetComponent<TextMeshPro>().text = role;
-        transform.GetChild(1).GetComponent<TextMeshPro>().text = project;
-        transform.GetChild(2).GetComponent<TextMeshPro>().text = this.username;
-        transform.GetChild(3).GetComponent<TextMeshPro>().text = password;
+        this.username = username;
+        transform.GetChild(0).GetComponent<TMP_Text>().text = role;
+        transform.GetChild(1).GetComponent<TMP_Text>().text = project;
+        transform.GetChild(2).GetComponent<TMP_Text>().text = username;
+        transform.GetChild(3).GetComponent<TMP_Text>().text = password;
     }
 
     public void OnDeleteUser()

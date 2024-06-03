@@ -11,7 +11,7 @@ public class CreateProjectScript : MonoBehaviour
     
     public void OnButtonPressed()
     {
-        Project dataToSend = new Project{ title = ProjectName.GetComponent<TMP_InputField>().text,description = ProjectDescription.GetComponent<TMP_InputField>().text,};
+        Project dataToSend = new Project{ title = ProjectName.GetComponent<TMP_InputField>().text,description = ProjectDescription.GetComponent<TMP_InputField>().text};
         NetworkManager.Instance.SendData("projects/create",dataToSend,OnProjectCreated);
     }
 
